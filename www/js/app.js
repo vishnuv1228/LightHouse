@@ -35,11 +35,29 @@ angular.module('starter', ['ionic'])
 
 
 .config(function ($stateProvider, $urlRouterProvider) {
-    $stateProvider.state('tabs', {
+    $stateProvider
+        .state('sign_in', {
+            url: '/sign_in',
+            templateUrl: 'templates/sign_in.html',
+            controller: 'SignInCtrl'
+            }
+        )
+       
+        .state('create_account', {
+            url: '/create_account',
+            templateUrl: 'templates/create_account.html',
+            controller: 'AccountCreationCtrl'
+            }
+        )
+        
+        
+        .state('tabs', {
             url: '/tab',
             abstract: true,
             templateUrl: 'templates/tabs.html'
         })
+    
+        
         .state('tabs.create_task', {
             url: '/create_task',
             views: {
@@ -56,5 +74,24 @@ angular.module('starter', ['ionic'])
                 }
             }
         });
-    $urlRouterProvider.otherwise('/tab/create_goal');
+    $urlRouterProvider.otherwise('/sign_in');
+})
+
+.controller('SignInCtrl', function($scope, $state) {
+    $scope.signIn = function(user) {
+        console.log('Sign-In', user);
+        $state.go('tabs.create_goal');
+    };
+    $scope.createAccount = function() {
+        $state.go('create_account');
+    };
+})
+
+.controller('AccountCreationCtrl', function($scope, $state) {
+    $scope.userInfo = function(user) {
+        console.log('Account', user);
+        $state.go('tabs.create_goal');
+    };
 });
+
+
