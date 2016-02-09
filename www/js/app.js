@@ -22,3 +22,20 @@ angular.module('starter', ['ionic'])
     }
   });
 })
+
+.config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider.state('tabs', {
+        url: '/tab',
+        abstract: true,
+        templateUrl: 'templates/tabs.html'
+    })
+    .state('tabs.create_goal', {
+        url: '/create_goal',
+        views: {
+            'create_goal-tab' : {
+                templateUrl: 'templates/create_goal.html'
+            }
+        }
+    });
+    $urlRouterProvider.otherwise('/tab/create_goal');
+});
