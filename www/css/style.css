@@ -1,9 +1,4 @@
 /* Empty. Add your own CSS if you like */
 .colorcode button:focus {
-    border-bottom-width: 3px;
-    border-bottom-style: solid;
-    border-bottom-color:  #542ADF;
-}
-.dayHighlight button:focus {
-    background-color:hsl(240,65%,75%);
+    opacity: 0.75;
 }
