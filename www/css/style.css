@@ -4,3 +4,6 @@
     border-bottom-style: solid;
     border-bottom-color:  #542ADF;
 }
+.dayHighlight button:focus {
+    background-color:hsl(240,65%,75%);
+}

@@ -1,0 +1,28 @@
+<ion-view view-title="Create Task">
+    <ion-content class="has-subheader">
+        <div class="list padding">
+            <p class="padding">Create a task that works towards your goal!</p>
+            <label class="item item-input padding">
+                <input type="text" placeholder="Name">
+            </label>
+            <p class="padding">What days would you like to schedule this task?</p>
+            <div class="button-bar bar-royal padding dayHighlight">
+                <button class="button">S</button>
+                <button class="button">M</button>
+                <button class="button">T</button>
+                <button class="button">W</button>
+                <button class="button">H</button>
+                <button class="button">F</button>
+                <button class="button">S</button>
+            </div>
+            <p class="padding">How long would you like to work on this task?</p>
+            <label class="item ">
+                <span>{{numberSelection}} minutes</span>
+                <div class="range range-positive">
+                    <i class="ion-ios-clock-outline"></i>
+                    <input type="range" name="volume" min="15" max="180" value="{{numberSelection}}" ng-model="numberSelection"> <i class="ion-ios-clock"></i>
+                </div>
+            </label>
+        </div>
+    </ion-content>
+</ion-view>
