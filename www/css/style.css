@@ -1,4 +1,7 @@
 /* Empty. Add your own CSS if you like */
 .colorcode button:focus {
+    opacity: 0.6;
+}
+.dayHighlight button:focus {
     opacity: 0.75;
 }
