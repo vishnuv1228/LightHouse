@@ -40,58 +40,63 @@ angular.module('starter', ['ionic'])
             url: '/sign_in',
             templateUrl: 'templates/sign_in.html',
             controller: 'SignInCtrl'
-            }
-        )
-       
-        .state('create_account', {
-            url: '/create_account',
-            templateUrl: 'templates/create_account.html',
-            controller: 'AccountCreationCtrl'
-            }
-        )
-        
-        
-        .state('tabs', {
-            url: '/tab',
-            abstract: true,
-            templateUrl: 'templates/tabs.html'
         })
-    
-        
-        .state('tabs.create_task', {
-            url: '/create_task',
-            views: {
-                'create_goal-tab': {
-                    templateUrl: 'templates/create_task.html',
-                }
+
+    .state('create_account', {
+        url: '/create_account',
+        templateUrl: 'templates/create_account.html',
+        controller: 'AccountCreationCtrl'
+    })
+
+
+    .state('tabs', {
+        url: '/tab',
+        abstract: true,
+        templateUrl: 'templates/tabs.html'
+    })
+
+    .state('tabs.goal_overview', {
+        url: '/goal_overview',
+        views: {
+            'create_goal-tab': {
+                templateUrl: 'templates/goal_overview.html'
             }
-        })
-        .state('tabs.create_goal', {
-            url: '/create_goal',
-            views: {
-                'create_goal-tab': {
-                    templateUrl: 'templates/create_goal.html'
-                }
+        }
+    })
+
+    .state('tabs.create_task', {
+        url: '/create_task',
+        views: {
+            'create_goal-tab': {
+                templateUrl: 'templates/create_task.html'
             }
-        });
+        }
+    })
+
+    .state('tabs.create_goal', {
+        url: '/create_goal',
+        views: {
+            'create_goal-tab': {
+                templateUrl: 'templates/create_goal.html'
+            }
+        }
+    });
     $urlRouterProvider.otherwise('/sign_in');
 })
 
-.controller('SignInCtrl', function($scope, $state) {
-    $scope.signIn = function(user) {
+.controller('SignInCtrl', function ($scope, $state) {
+    $scope.signIn = function (user) {
         console.log('Sign-In', user);
-        $state.go('tabs.create_goal');
+        $state.go('tabs.goal_overview');
     };
-    $scope.createAccount = function() {
+    $scope.createAccount = function () {
         $state.go('create_account');
     };
 })
 
-.controller('AccountCreationCtrl', function($scope, $state) {
-    $scope.userInfo = function(user) {
+.controller('AccountCreationCtrl', function ($scope, $state) {
+    $scope.userInfo = function (user) {
         console.log('Account', user);
         $state.go('tabs.create_goal');
     };
 });
-
-
