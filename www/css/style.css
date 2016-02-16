@@ -1,7 +1,33 @@
-/* Empty. Add your own CSS if you like */
-.colorcode button:focus {
-    opacity: 0.6;
-}
 .dayHighlight button:focus {
     opacity: 0.75;
+}
+#calmRadio.item-radio .item-content{
+    background-color:  #43cee6;
+}
+#calmRadio {
+    width: 20%;
+}
+#positiveRadio.item-radio .item-content{
+    background-color: #4a87ee;
+}
+#positiveRadio {
+    width:20%;
+}
+#energizedRadio.item-radio .item-content{
+    background-color: #f0b840;
+}
+#energizedRadio{
+    width:20%;
+}
+#balancedRadio.item-radio .item-content{
+    background-color:  #66cc33;
+}
+#balancedRadio{
+    width:20%;
+}
+#assertiveRadio.item-radio .item-content{
+    background-color: #ef4e3a;
+}
+#assertiveRadio{
+    width:20%;
 }

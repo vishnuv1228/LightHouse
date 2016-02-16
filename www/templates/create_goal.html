@@ -7,15 +7,27 @@
 
         <div class="list padding">
             <label class="item item-input padding">
-                <input type="text" placeholder="Goal Title">
+                <input type="text" placeholder="Goal Title"  ng-model="goal.name">
             </label>
             <p class="padding">Please select a color:</p>
-            <div class="colorcode button-bar padding">
+            <div class="button-bar padding buttonGroup">
+<!--
                 <button class="button button-calm"></button>
                 <button class="button button-positive"></button>
                 <button class="button button-energized"></button>
                 <button class="button button-balanced"></button>
                 <button class="button button-assertive"></button>
+-->
+                
+                
+            
+                
+                
+                <ion-radio ng-model="choice" ng-value="'A'" id="calmRadio">Calm</ion-radio>
+                <ion-radio ng-model="choice" ng-value="'B'" id="positiveRadio">Positive</ion-radio>
+                <ion-radio ng-model="choice" ng-value="'C'" id="energizedRadio">Energized</ion-radio>
+                <ion-radio ng-model="choice" ng-value="'D'" id="balancedRadio">Balanced</ion-radio>
+                <ion-radio ng-model="choice" ng-value="'E'" id="assertiveRadio">Assertive</ion-radio>
             </div>
 
             <a class="button button-royal button-block" href="#/tab/create_task">Continue</a>
