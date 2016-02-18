@@ -77,7 +77,8 @@ angular.module('starter', ['ionic'])
         url: '/create_goal',
         views: {
             'create_goal-tab': {
-                templateUrl: 'templates/create_goal.html'
+                templateUrl: 'templates/create_goal.html',
+                controller: 'CreateGoalCtrl'
             }
         }
     });
@@ -99,4 +100,11 @@ angular.module('starter', ['ionic'])
         console.log('Account', user);
         $state.go('tabs.create_goal');
     };
+})
+
+.controller('CreateGoalCtrl', function($scope, $state) {
+    $scope.createGoal = function(goal) {
+        console.log('Goal', goal);
+        $state.go('tabs.create_task');
+    };  
 });
