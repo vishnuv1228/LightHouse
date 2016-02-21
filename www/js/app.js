@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+var LightHouse = angular.module('LightHouse', ['ionic'])
 
 
 .run(function ($ionicPlatform) {
@@ -67,6 +67,9 @@ angular.module('starter', ['ionic'])
 
     .state('tabs.create_task', {
         url: '/create_task',
+        params: {
+            obj: null
+        },
         views: {
             'create_goal-tab': {
                 templateUrl: 'templates/create_task.html',
@@ -102,68 +105,83 @@ angular.module('starter', ['ionic'])
         console.log('Account', user);
         $state.go('tabs.create_goal');
     };
-})
+});
 
-.controller('CreateGoalCtrl', function ($scope, $state) {
-        $scope.createGoal = function (goal) {
+LightHouse.controller('CreateGoalCtrl', function ($scope, $state, goalService) {
+    $scope.createGoal = function (goal) {
+        goalService.addGoal(goal);
+        console.log('Goal', goalService.getGoals);
+        $state.go('tabs.create_task', {obj: goal});
+    };
+});
 
-            console.log('Goal', goal);
-            $state.go('tabs.create_task');
-        };
-    })
-    .controller('CreateTaskCtrl', function ($scope, $state) {
-        $scope.createTask = function (task) {
 
-            console.log('Task', task);
-            $state.go('tabs.goal_overview');
-        };
-    })
-    .controller('GoalOverviewCtrl', function ($scope, $state, $ionicModal) {
-        $scope.goals = [
-            {
-                name: 'Healthy Eating',
-                color: 'positive',
-                icon: 'ion-fork',
-                task: [
-                    {
-                        name: 'Eating a salad',
-                        freq: 4,
-                        priority: 'high'
+LightHouse.controller('CreateTaskCtrl', function (goalService, $scope, $state) {
+    $scope.createTask = function (task) { 
+       // $state.params.obj.task.push(task);
+        $state.go('tabs.goal_overview');
+    };
+});
+
+LightHouse.service('goalService', function () {
+    var goals = [
+        {
+
+            name: 'Healthy Eating',
+            color: 'positive',
+            icon: 'ion-fork',
+            task: [
+                {
+                    name: 'Eating a salad',
+                    freq: 4,
+                    priority: 'high'
                     }
                 ]
-            }, {
-                name: 'Physical Fitness',
-                color: 'energized',
-                icon: 'ion-android-walk'
-            },
-            {
-                name: 'Academic Performance',
-                color: 'calm',
-                icon: 'ion-university'
-            },
-        ];
+       }, {
+            name: 'Physical Fitness',
+            color: 'energized',
+            icon: 'ion-android-walk'
+                },
+        {
+            name: 'Academic Performance',
+            color: 'calm',
+            icon: 'ion-university'
+                },
+
+   ];
+
+    var addGoal = function (newGoal) {
+        goals.push(newGoal);
+    };
+    var getGoals = function () {
+        return goals;
+    };
+
+    return {
+        addGoal: addGoal,
+        getGoals: getGoals
+    };
 
 
-        /*
-         * if given goal is the selected goal, deselect it
-         * else, select the given goal
-         */
-        $scope.toggleGoal = function (goal) {
-            if ($scope.isGoalShown(goal)) {
-                $scope.shownGoal = null;
-            } else {
-                $scope.shownGoal = goal;
-            }
-        };
-        $scope.isGoalShown = function (goal) {
-            return $scope.shownGoal === goal;
-        };
+});
 
 
-        //        $ionicModal.fromTemplateUrl('templates/goal_overview.html', {
-        //            scope: $scope
-        //        }).then(function (modal) {
-        //            $scope.modal = modal;
-        //        });
+LightHouse.controller('GoalOverviewCtrl', function ($scope, goalService) {
+    $scope.goals = goalService.getGoals();
 
-    });
+    /*
+     * if given goal is the selected goal, deselect it
+     * else, select the given goal
+     */
+    $scope.toggleGoal = function (goal) {
+        if ($scope.isGoalShown(goal)) {
+            $scope.shownGoal = null;
+        } else {
+            $scope.shownGoal = goal;
+        }
+    };
+    $scope.isGoalShown = function (goal) {
+        return $scope.shownGoal === goal;
+    };
+
+});
