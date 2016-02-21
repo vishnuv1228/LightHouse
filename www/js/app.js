@@ -59,7 +59,8 @@ angular.module('starter', ['ionic'])
         url: '/goal_overview',
         views: {
             'create_goal-tab': {
-                templateUrl: 'templates/goal_overview.html'
+                templateUrl: 'templates/goal_overview.html',
+                controller: 'GoalOverviewCtrl'
             }
         }
     })
@@ -103,17 +104,66 @@ angular.module('starter', ['ionic'])
     };
 })
 
-.controller('CreateGoalCtrl', function($scope, $state) {
-    $scope.createGoal = function(goal) {
-        
-        console.log('Goal', goal);
-        $state.go('tabs.create_task');
-    };  
-})
-.controller('CreateTaskCtrl', function($scope, $state) {
-    $scope.createTask = function(task) {
-        
-        console.log('Task', task);
-        $state.go('tabs.goal_overview');
-    };  
-});
+.controller('CreateGoalCtrl', function ($scope, $state) {
+        $scope.createGoal = function (goal) {
+
+            console.log('Goal', goal);
+            $state.go('tabs.create_task');
+        };
+    })
+    .controller('CreateTaskCtrl', function ($scope, $state) {
+        $scope.createTask = function (task) {
+
+            console.log('Task', task);
+            $state.go('tabs.goal_overview');
+        };
+    })
+    .controller('GoalOverviewCtrl', function ($scope, $state, $ionicModal) {
+        $scope.goals = [
+            {
+                name: 'Healthy Eating',
+                color: 'positive',
+                icon: 'ion-fork',
+                task: [
+                    {
+                        name: 'Eating a salad',
+                        freq: 4,
+                        priority: 'high'
+                    }
+                ]
+            }, {
+                name: 'Physical Fitness',
+                color: 'energized',
+                icon: 'ion-android-walk'
+            },
+            {
+                name: 'Academic Performance',
+                color: 'calm',
+                icon: 'ion-university'
+            },
+        ];
+
+
+        /*
+         * if given goal is the selected goal, deselect it
+         * else, select the given goal
+         */
+        $scope.toggleGoal = function (goal) {
+            if ($scope.isGoalShown(goal)) {
+                $scope.shownGoal = null;
+            } else {
+                $scope.shownGoal = goal;
+            }
+        };
+        $scope.isGoalShown = function (goal) {
+            return $scope.shownGoal === goal;
+        };
+
+
+        //        $ionicModal.fromTemplateUrl('templates/goal_overview.html', {
+        //            scope: $scope
+        //        }).then(function (modal) {
+        //            $scope.modal = modal;
+        //        });
+
+    });

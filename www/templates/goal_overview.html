@@ -3,25 +3,69 @@
     <ion-content class="has-subheader">
 
         <h2 class="padding title">Willa's Goal Progress</h2>
-        
-     <just-gage id="test1" class="someClass" min="0" max="100" value="42" title="Test 1"></just-gage>
-        
+
+        <!--        <just-gage id="test1" class="someClass" min="0" max="100" value="42" title="Test 1"></just-gage>-->
+
 
         <a class="button button-royal button-block" href="#/tab/create_goal">Manage Goals</a>
+        <!-- ITEMS IN GOALS dynamic
 
         <div class="list">
-            <a class="item item-icon-left positive" href="#">
-                <i class="icon ion-fork "></i> Healthy Eating
-            </a>
-            <a class="item item-icon-left balanced" href="#">
-                <i class="icon ion-android-walk"></i> Physical Fitness
-            </a>
-            <a class="item item-icon-left" href="#">
-                <i class="icon ion-university"></i> Academic Performance
-            </a>
-        </div>
+        <a ng-repeat="item in goals" class=" item item-icon-left {{item.color}}">
+         <i class="icon {{item.icon}}"></i>
+          {{item.name}}
+        </a>
+      </div>
+-->
+
+        <ion-list>
+            <div ng-repeat="goal in goals">
+                <ion-item class="item item-icon-left {{goal.color}}" ng-click="toggleGoal(goal)" ng-class="{active: isGoalShown(goal)}">
+                    <i class="icon {{goal.icon}}" ng-class="isGoalShown(goal)"></i> &nbsp; {{goal.name}}
+                </ion-item>
+                <ion-item class="item-accordion" ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">
+                    {{task.name}}
+                </ion-item>
+            </div>
+        </ion-list>
 
 
+        <!-- MODALS
+    <div class="buttons">
+        <button class="button button-icon ion-compose" ng-click="modal.show()">
+        </button>
+      </div>
+        
+-->
 
     </ion-content>
+    <!--
+     MODALS
+    <script id="templates/goal_overview.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">New Contact</h1>
+            <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">First Name</span>
+                    <input ng-model="newUser.firstName" type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Last Name</span>
+                    <input ng-model="newUser.lastName" type="text">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input ng-model="newUser.email" type="text">
+                </label>
+                <button class="button button-full button-positive" ng-click="createContact(newUser)">Create</button>
+            </div>
+        </ion-content>
+    </ion-modal-view>
+</script>    
+-->
+
 </ion-view>
