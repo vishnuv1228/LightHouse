@@ -1,11 +1,18 @@
-<ion-view view-title="Create Task">
+<ion-view view-title="Create Action Step">
     <ion-content class="has-subheader">
         <div class="list padding">
-            <p class="padding">Create a task that works towards your goal!</p>
+            <p class="padding">Create an action step that works towards your goal!</p>
             <label class="item item-input padding">
-                <input type="text" placeholder="Name">
+                <input type="text" placeholder="Running on the treadmill" ng-model="task.title">
             </label>
-            <p class="padding">What days would you like to schedule this task?</p>
+
+            <p class="padding">How many times a week do you want to work on this task?</p>
+            <label class="item item-input padding">
+            <input type="tel" placeholder="i.e. 5" ng-model="task.freq">
+            </label>
+
+            <!--
+            <p class="padding"></p>
             <div class="dayHighlight button-bar bar-royal padding">
                 <button class="button">S</button>
                 <button class="button">M</button>
@@ -15,14 +22,46 @@
                 <button class="button">F</button>
                 <button class="button">S</button>
             </div>
-            <p class="padding">How long would you like to work on this task?</p>
+-->
+
+            <!--
+            <p class="padding">How many times a week do you want to work on this goal?</p>
             <label class="item ">
-                <span>{{numberSelection}} minutes</span>
+                <span>{{numberSelection}} times a week</span>
                 <div class="range range-royal">
                     <i class="ion-ios-clock-outline"></i>
-                    <input type="range" name="volume" min="15" max="60" value="{{numberSelection}}" ng-model="numberSelection"> <i class="ion-ios-clock"></i>
+                    <input type="range" name="volume" min="1" max="50" value="{{numberSelection}}" ng-model="numberSelection"> <i class="ion-ios-clock"></i>
                 </div>
             </label>
+-->
+
+
+
+            <p class="padding">Select a priority</p>
+            <div class="row">
+                <div class="col">
+                    <ion-radio class="button-bar" ng-model="task.priority">Low</ion-radio>
+                </div>
+                <div class="col">
+                    <ion-radio ng-model="task.priority">Medium</ion-radio>
+                </div>
+                <div class="col">
+                    <ion-radio ng-model="task.priority">High</ion-radio>
+                </div>
+            </div>
+            <button class="button button-royal button-block" ng-click="createTask(task)">Submit</button>
+
+
+
+
+
+
         </div>
+
+
+
+
+
+
     </ion-content>
 </ion-view>
