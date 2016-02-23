@@ -67,14 +67,14 @@ var LightHouse = angular.module('LightHouse', ['ionic'])
 
     .state('tabs.create_task', {
         url: '/create_task',
-        params: {
-            obj: null
-        },
         views: {
             'create_goal-tab': {
                 templateUrl: 'templates/create_task.html',
                 controller: 'CreateTaskCtrl'
             }
+        },
+        data:{
+            goal:null
         }
     })
 
@@ -107,23 +107,28 @@ var LightHouse = angular.module('LightHouse', ['ionic'])
     };
 });
 
-LightHouse.controller('CreateGoalCtrl', function ($scope, $state, goalService) {
+LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService) {
     $scope.createGoal = function (goal) {
+        goal.task=[];
         goalService.addGoal(goal);
         console.log('Goal', goalService.getGoals);
-        $state.go('tabs.create_task', {obj: goal});
+        $state.get('tabs.create_task').data.goal=goal;
+        $state.go('tabs.create_task');
     };
-});
+}]);
 
 
-LightHouse.controller('CreateTaskCtrl', function (goalService, $scope, $state) {
+// 
+LightHouse.controller('CreateTaskCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService) {
     $scope.createTask = function (task) { 
-       // $state.params.obj.task.push(task);
+        goalService.addTask($state.current.data.goal,task);
+        alert(task.title);
         $state.go('tabs.goal_overview');
     };
-});
+}]);
 
 LightHouse.service('goalService', function () {
+    var currGoal={};
     var goals = [
         {
 
@@ -170,10 +175,16 @@ LightHouse.service('goalService', function () {
     var getGoals = function () {
         return goals;
     };
+    
+    var addTask = function(goal, task){
+        goal.task.push(task);
+    };
 
     return {
         addGoal: addGoal,
-        getGoals: getGoals
+        getGoals: getGoals,
+        addTask: addTask,
+        currGoal: currGoal,
     };
 
 
