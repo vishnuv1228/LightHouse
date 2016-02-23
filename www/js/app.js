@@ -134,18 +134,32 @@ LightHouse.service('goalService', function () {
                 {
                     name: 'Eating a salad',
                     freq: 4,
-                    priority: 'high'
+                    priority: 'low'
                     }
                 ]
        }, {
             name: 'Physical Fitness',
             color: 'energized',
-            icon: 'ion-android-walk'
+            icon: 'ion-android-walk',
+            task: [
+                {
+                    name: 'Running on the treadmill',
+                    freq: 3,
+                    priority: 'medium'
+                    }
+                ]
                 },
         {
             name: 'Academic Performance',
             color: 'calm',
-            icon: 'ion-university'
+            icon: 'ion-university',
+            task: [
+                {
+                    name: 'Review lecture notes',
+                    freq: 5,
+                    priority: 'high'
+                    }
+                ]
                 },
 
    ];

@@ -24,7 +24,7 @@
                     <i class="icon {{goal.icon}}" ng-class="isGoalShown(goal)"></i> &nbsp; {{goal.name}}
                 </ion-item>
                 <ion-item class="item-accordion" ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">
-                    {{task.name}}
+                    {{task.title}}
                 </ion-item>
             </div>
         </ion-list>
