@@ -137,7 +137,7 @@ LightHouse.service('goalService', function () {
             icon: 'ion-fork',
             task: [
                 {
-                    name: 'Eating a salad',
+                    title: 'Eating a salad',
                     freq: 4,
                     priority: 'low'
                     }
@@ -148,7 +148,7 @@ LightHouse.service('goalService', function () {
             icon: 'ion-android-walk',
             task: [
                 {
-                    name: 'Running on the treadmill',
+                    title: 'Running on the treadmill',
                     freq: 3,
                     priority: 'medium'
                     }
@@ -160,7 +160,7 @@ LightHouse.service('goalService', function () {
             icon: 'ion-university',
             task: [
                 {
-                    name: 'Review lecture notes',
+                    title: 'Review lecture notes',
                     freq: 5,
                     priority: 'high'
                     }
