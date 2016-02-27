@@ -46,3 +46,9 @@
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;
 }
+.goal_info {
+    margin-left:40px;
+}
+.goal_text {
+   text-align: center;
+}

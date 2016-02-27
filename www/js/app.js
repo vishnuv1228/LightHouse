@@ -3,8 +3,8 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
+//var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
 var LightHouse = angular.module('LightHouse', ['ionic'])
-
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -73,8 +73,8 @@ var LightHouse = angular.module('LightHouse', ['ionic'])
                 controller: 'CreateTaskCtrl'
             }
         },
-        data:{
-            goal:null
+        data: {
+            goal: null
         }
     })
 
@@ -109,10 +109,10 @@ var LightHouse = angular.module('LightHouse', ['ionic'])
 
 LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService) {
     $scope.createGoal = function (goal) {
-        goal.task=[];
+        goal.task = [];
         goalService.addGoal(goal);
         console.log('Goal', goalService.getGoals);
-        $state.get('tabs.create_task').data.goal=goal;
+        $state.get('tabs.create_task').data.goal = goal;
         $state.go('tabs.create_task');
     };
 }]);
@@ -120,15 +120,15 @@ LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', func
 
 // 
 LightHouse.controller('CreateTaskCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService) {
-    $scope.createTask = function (task) { 
-        goalService.addTask($state.current.data.goal,task);
+    $scope.createTask = function (task) {
+        goalService.addTask($state.current.data.goal, task);
         alert(task.title);
         $state.go('tabs.goal_overview');
     };
 }]);
 
 LightHouse.service('goalService', function () {
-    var currGoal={};
+    var currGoal = {};
     var goals = [
         {
 
@@ -175,8 +175,8 @@ LightHouse.service('goalService', function () {
     var getGoals = function () {
         return goals;
     };
-    
-    var addTask = function(goal, task){
+
+    var addTask = function (goal, task) {
         goal.task.push(task);
     };
 
@@ -193,6 +193,14 @@ LightHouse.service('goalService', function () {
 
 LightHouse.controller('GoalOverviewCtrl', function ($scope, goalService) {
     $scope.goals = goalService.getGoals();
+
+    $scope.data = {
+        showDelete: false
+    };
+    
+    $scope.onItemDelete = function(goal) {
+            $scope.goals.splice($scope.goals.indexOf(goal), 1);
+        };
 
     /*
      * if given goal is the selected goal, deselect it
