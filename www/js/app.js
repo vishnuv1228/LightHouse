@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 //var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
-var LightHouse = angular.module('LightHouse', ['ionic'])
+var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -110,9 +110,10 @@ var LightHouse = angular.module('LightHouse', ['ionic'])
     };
 });
 
-LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService) {
+LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
 
     var goalFromPrev = $state.params.obj;
+    var goalBank = ListFactory.getList();
     // Set up the initial values for the goal if selected from goal overview
 
     if (goalFromPrev !== null) {
@@ -126,7 +127,6 @@ LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', func
     $scope.createGoal = function (goal) {
         // Update goal
         if (goalFromPrev !== null) {
-            var goalBank = goalService.getGoals();
             for (var i = 0; i < goalBank.length; i++) {
                 if (goalBank[i].id == goalFromPrev.id) {
                     goalBank[i].name = goal.name;
@@ -135,6 +135,7 @@ LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', func
                     break;
                 }
             }
+            ListFactory.setList(goalBank);
             $state.go('tabs.goal_overview');
         } else { // Add new goal
             goal.task = [];
@@ -151,10 +152,12 @@ LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', func
 
 
 // 
-LightHouse.controller('CreateTaskCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService) {
+LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory,  $scope, $state, goalService) {
     $scope.createTask = function (task) {
         goalService.addTask($state.current.data.goal, task);
         //        alert(task.title);
+        var goalBank = goalService.getGoals();
+        ListFactory.setList(goalBank);
         $state.go('tabs.goal_overview');
     };
 }]);
@@ -226,8 +229,20 @@ LightHouse.service('goalService', function () {
 });
 
 
-LightHouse.controller('GoalOverviewCtrl', function ($scope, goalService, $state) {
-    $scope.goals = goalService.getGoals();
+LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory,  $scope, $state, goalService) {
+    
+    
+    if (ListFactory.getList().length === 0) {
+        $scope.goals = goalService.getGoals();
+    } else {
+        $scope.goals = ListFactory.getList();
+    }
+    
+    $scope.doRefresh = function() {
+        $scope.goals = ListFactory.getList();
+        $scope.$broadcast('scroll.refreshComplete');
+       
+    }
 
     $scope.data = {
         showDelete: false
@@ -235,6 +250,7 @@ LightHouse.controller('GoalOverviewCtrl', function ($scope, goalService, $state)
 
     $scope.onItemDelete = function (goal) {
         $scope.goals.splice($scope.goals.indexOf(goal), 1);
+        ListFactory.setList($scope.goals);
     };
 
     $scope.toggleEdit = function (goal) {
@@ -258,4 +274,4 @@ LightHouse.controller('GoalOverviewCtrl', function ($scope, goalService, $state)
         return $scope.shownGoal === goal;
     };
 
-});
+}]);

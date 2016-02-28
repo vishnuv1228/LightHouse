@@ -3,7 +3,7 @@ angular.module('starter.services', [])
 
     var list = [];
     var listStore = localStorage.getItem("list");
-    if (listStore != null && listStore != '' && angular.isArray(angular.fromJson(listStore))) {
+    if (listStore !== null && listStore !== '' && angular.isArray(angular.fromJson(listStore))) {
       list = angular.fromJson(listStore);
     }
     var listSrv = {
@@ -13,7 +13,7 @@ angular.module('starter.services', [])
         return true;
       },
       getList: function() {
-        if (list != null) {
+        if (list !== null) {
           return list;
         } else {
           return [];

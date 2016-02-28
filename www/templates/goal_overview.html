@@ -5,6 +5,8 @@
     </ion-nav-buttons>
 
     <ion-content class="has-subheader">
+     <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        </ion-refresher>
 
         <h2 class="padding title">Willa's Goal Progress</h2>
 
@@ -22,6 +24,7 @@
       </div>
 -->
 
+       
         <ion-list show-delete="data.showDelete">
             <div ng-repeat="goal in goals">
                 <ion-item class="goal_text item item-icon-left {{goal.color}}" ng-click="toggleGoal(goal)" ng-class="{active: isGoalShown(goal)}">
