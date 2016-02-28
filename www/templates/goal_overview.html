@@ -35,8 +35,13 @@
                     <i class="goal_info icon {{goal.icon}}" ng-class="isGoalShown(goal)"></i> &nbsp; {{goal.name}}
 
                 </ion-item>
-                <ion-item class="item-accordion" ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">
+                <ion-item ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">
+                    <ion-delete-button class="ion-minus-circled" ng-click="onTaskDelete(goal, task)"></ion-delete-button>
                     {{task.title}}
+                </ion-item>
+                <ion-item class="item item-icon-left" ng-show="isGoalShown(goal)" ng-click="addTask(goal)">
+                   <i class="icon ion-ios-plus-empty"></i>
+                    Action Step
                 </ion-item>
             </div>
         </ion-list>

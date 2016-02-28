@@ -67,6 +67,9 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
 
     .state('tabs.create_task', {
         url: '/create_task',
+        params: {
+            obj: null
+        },
         views: {
             'create_goal-tab': {
                 templateUrl: 'templates/create_task.html',
@@ -139,7 +142,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
             $state.go('tabs.goal_overview');
         } else { // Add new goal
             goal.task = [];
-            goal.id =  Math.round((Math.random() * 10) * 10);
+            goal.id = Math.round((Math.random() * 10) * 10);
             goalService.addGoal(goal);
             //console.log('Goal', goalService.getGoals);
             $state.get('tabs.create_task').data.goal = goal;
@@ -152,10 +155,15 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 
 
 // 
-LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory,  $scope, $state, goalService) {
+LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
+    var goalFromPrev = $state.params.obj;
+
     $scope.createTask = function (task) {
-        goalService.addTask($state.current.data.goal, task);
-        //        alert(task.title);
+        if (goalFromPrev !== null) {
+            goalService.addTask(goalFromPrev, task);
+        } else {
+            goalService.addTask($state.current.data.goal, task);
+        }
         var goalBank = goalService.getGoals();
         ListFactory.setList(goalBank);
         $state.go('tabs.goal_overview');
@@ -215,7 +223,12 @@ LightHouse.service('goalService', function () {
     };
 
     var addTask = function (goal, task) {
-        goal.task.push(task);
+        for (var i = 0; i < goals.length; i++) {
+            if (goals[i].id == goal.id) {
+                goals[i].task.push(task);
+                break;
+            }
+        }
     };
 
     return {
@@ -229,20 +242,19 @@ LightHouse.service('goalService', function () {
 });
 
 
-LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory,  $scope, $state, goalService) {
-    
-    
+LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
+
+
     if (ListFactory.getList().length === 0) {
         $scope.goals = goalService.getGoals();
     } else {
         $scope.goals = ListFactory.getList();
     }
-    
-    $scope.doRefresh = function() {
+
+    $scope.doRefresh = function () {
         $scope.goals = ListFactory.getList();
         $scope.$broadcast('scroll.refreshComplete');
-       
-    }
+    };
 
     $scope.data = {
         showDelete: false
@@ -251,6 +263,22 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
     $scope.onItemDelete = function (goal) {
         $scope.goals.splice($scope.goals.indexOf(goal), 1);
         ListFactory.setList($scope.goals);
+    };
+    
+    $scope.onTaskDelete = function (goal, task) {
+        for (var i = 0; i < $scope.goals.length; i++) {
+            if ($scope.goals[i].id === goal.id) {
+                $scope.goals[i].task.splice($scope.goals[i].task.indexOf(task), 1);
+                break;
+            }
+        }
+        ListFactory.setList($scope.goals);
+    };
+
+    $scope.addTask = function (goal) {
+        $state.go('tabs.create_task', {
+            obj: goal
+        });
     };
 
     $scope.toggleEdit = function (goal) {
