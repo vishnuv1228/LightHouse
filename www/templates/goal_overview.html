@@ -1,11 +1,7 @@
 <ion-view view-title="Goal Bank">
     <ion-nav-buttons side="primary">
-    <button class="button button-icon ion-minus-circled" ng-click="data.showDelete = !data.showDelete; data.showReorder = false;">
-    </button>
-    </ion-nav-buttons>
-      <ion-nav-buttons side="secondary">
-    <button class="button button-icon ion-edit" ng-click="data.showReorder = !data.showReorder; data.showDelete = false;">
-    </button>
+        <button class="button button-icon ion-minus-circled" ng-click="data.showDelete = !data.showDelete; data.showEdit = false;">
+        </button>
     </ion-nav-buttons>
 
     <ion-content class="has-subheader">
@@ -29,9 +25,12 @@
         <ion-list show-delete="data.showDelete">
             <div ng-repeat="goal in goals">
                 <ion-item class="goal_text item item-icon-left {{goal.color}}" ng-click="toggleGoal(goal)" ng-class="{active: isGoalShown(goal)}">
-                   <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(goal)"></ion-delete-button>
+                    <ion-option-button class="button-dark" ng-click="toggleEdit(goal)">
+                        <i class="icon ion-edit"></i>
+                    </ion-option-button>
+                    <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(goal)"></ion-delete-button>
                     <i class="goal_info icon {{goal.icon}}" ng-class="isGoalShown(goal)"></i> &nbsp; {{goal.name}}
-                    
+
                 </ion-item>
                 <ion-item class="item-accordion" ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">
                     {{task.title}}

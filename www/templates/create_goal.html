@@ -1,24 +1,28 @@
 <ion-view view-title="Create Goal">
 
     <ion-content class="has-subheader">
-        <div class="goal_creation">
-            <p class="padding">Please input information about your goal:</p>
-        </div>
-
-        <div class="list padding">
-            <label class="item item-input padding">
-                <input type="text" placeholder="Goal Title" ng-model="goal.name">
-            </label>
-            <p class="padding">Please select a color:</p>
-            <div class="padding button-bar buttonGroup">
-                <ion-radio ng-model="goal.color" value="calm" id="calmRadio">Calm</ion-radio>
-                <ion-radio ng-model="goal.color" value="positive" id="positiveRadio">Positive</ion-radio>
-                <ion-radio ng-model="goal.color" value="energized" id="energizedRadio">Energized</ion-radio>
-                <ion-radio ng-model="goal.color" value="balanced" id="balancedRadio">Balanced</ion-radio>
-                <ion-radio ng-model="goal.color" value="assertive" id="assertiveRadio">Assertive</ion-radio>
+        
+            <div class="goal_creation">
+                <p class="padding">Please input information about your goal:</p>
             </div>
-            <button class="button button-royal button-block" ng-click="createGoal(goal)">Continue</button>
-        </div>
 
+            <div class="list padding">
+               <form name="form" ng-model="form">
+               <div ng-init="setForm(form);"></div>
+                <label class="item item-input padding">
+                    <input name="goal.name"type="text" placeholder="Goal Title" ng-model="goal.name">
+                </label>
+                <p class="padding">Please select a color:</p>
+                <div class="padding button-bar buttonGroup">
+                    <ion-radio ng-model="goal.color" value="calm" id="calmRadio">Calm</ion-radio>
+                    <ion-radio ng-model="goal.color" value="positive" id="positiveRadio">Positive</ion-radio>
+                    <ion-radio ng-model="goal.color" value="energized" id="energizedRadio">Energized</ion-radio>
+                    <ion-radio ng-model="goal.color" value="balanced" id="balancedRadio">Balanced</ion-radio>
+                    <ion-radio ng-model="goal.color" value="assertive" id="assertiveRadio">Assertive</ion-radio>
+                </div>
+                <button class="button button-royal button-block" ng-click="createGoal(goal)">Continue</button>
+                </form>
+            </div>
+        
     </ion-content>
 </ion-view>

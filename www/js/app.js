@@ -80,6 +80,9 @@ var LightHouse = angular.module('LightHouse', ['ionic'])
 
     .state('tabs.create_goal', {
         url: '/create_goal',
+        params: {
+            obj: null
+        },
         views: {
             'create_goal-tab': {
                 templateUrl: 'templates/create_goal.html',
@@ -108,12 +111,39 @@ var LightHouse = angular.module('LightHouse', ['ionic'])
 });
 
 LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService) {
+
+    var goalFromPrev = $state.params.obj;
+    // Set up the initial values for the goal if selected from goal overview
+
+    if (goalFromPrev !== null) {
+        $scope.goal = {
+            color: goalFromPrev.color,
+            name: goalFromPrev.name,
+            icon: goalFromPrev.icon
+        };
+    }
+
     $scope.createGoal = function (goal) {
-        goal.task = [];
-        goalService.addGoal(goal);
-        console.log('Goal', goalService.getGoals);
-        $state.get('tabs.create_task').data.goal = goal;
-        $state.go('tabs.create_task');
+        // Update goal
+        if (goalFromPrev !== null) {
+            var goalBank = goalService.getGoals();
+            for (var i = 0; i < goalBank.length; i++) {
+                if (goalBank[i].id == goalFromPrev.id) {
+                    goalBank[i] = goal;
+                    break;
+                }
+            }
+            $state.go('tabs.goal_overview');
+        } else { // Add new goal
+            goal.task = [];
+            goal.id =  Math.round((Math.random() * 10) * 10);
+            goalService.addGoal(goal);
+            //console.log('Goal', goalService.getGoals);
+            $state.get('tabs.create_task').data.goal = goal;
+            $state.go('tabs.create_task');
+        }
+
+
     };
 }]);
 
@@ -122,7 +152,7 @@ LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', func
 LightHouse.controller('CreateTaskCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService) {
     $scope.createTask = function (task) {
         goalService.addTask($state.current.data.goal, task);
-        alert(task.title);
+        //        alert(task.title);
         $state.go('tabs.goal_overview');
     };
 }]);
@@ -135,6 +165,7 @@ LightHouse.service('goalService', function () {
             name: 'Healthy Eating',
             color: 'positive',
             icon: 'ion-fork',
+            id: 1,
             task: [
                 {
                     title: 'Eating a salad',
@@ -146,6 +177,7 @@ LightHouse.service('goalService', function () {
             name: 'Physical Fitness',
             color: 'energized',
             icon: 'ion-android-walk',
+            id: 2,
             task: [
                 {
                     title: 'Running on the treadmill',
@@ -158,6 +190,7 @@ LightHouse.service('goalService', function () {
             name: 'Academic Performance',
             color: 'calm',
             icon: 'ion-university',
+            id: 3,
             task: [
                 {
                     title: 'Review lecture notes',
@@ -191,16 +224,22 @@ LightHouse.service('goalService', function () {
 });
 
 
-LightHouse.controller('GoalOverviewCtrl', function ($scope, goalService) {
+LightHouse.controller('GoalOverviewCtrl', function ($scope, goalService, $state) {
     $scope.goals = goalService.getGoals();
 
     $scope.data = {
         showDelete: false
     };
-    
-    $scope.onItemDelete = function(goal) {
-            $scope.goals.splice($scope.goals.indexOf(goal), 1);
-        };
+
+    $scope.onItemDelete = function (goal) {
+        $scope.goals.splice($scope.goals.indexOf(goal), 1);
+    };
+
+    $scope.toggleEdit = function (goal) {
+        $state.go('tabs.create_goal', {
+            obj: goal
+        });
+    };
 
     /*
      * if given goal is the selected goal, deselect it
