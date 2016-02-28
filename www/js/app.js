@@ -129,7 +129,9 @@ LightHouse.controller('CreateGoalCtrl', ['$scope', '$state', 'goalService', func
             var goalBank = goalService.getGoals();
             for (var i = 0; i < goalBank.length; i++) {
                 if (goalBank[i].id == goalFromPrev.id) {
-                    goalBank[i] = goal;
+                    goalBank[i].name = goal.name;
+                    goalBank[i].color = goal.color;
+                    goalBank[i].icon = goal.icon;
                     break;
                 }
             }
