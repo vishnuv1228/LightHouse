@@ -5,7 +5,7 @@
     </ion-nav-buttons>
 
     <ion-content class="has-subheader">
-     <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
 
         <h2 class="padding title">Willa's Goal Progress</h2>
@@ -24,7 +24,7 @@
       </div>
 -->
 
-       
+
         <ion-list show-delete="data.showDelete">
             <div ng-repeat="goal in goals">
                 <ion-item class="goal_text item item-icon-left {{goal.color}}" ng-click="toggleGoal(goal)" ng-class="{active: isGoalShown(goal)}">
@@ -35,13 +35,15 @@
                     <i class="goal_info icon {{goal.icon}}" ng-class="isGoalShown(goal)"></i> &nbsp; {{goal.name}}
 
                 </ion-item>
-                <ion-item ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">
+                <ion-item class="item item-button-right padding-task" ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">
                     <ion-delete-button class="ion-minus-circled" ng-click="onTaskDelete(goal, task)"></ion-delete-button>
-                    {{task.title}}
+                        <span ng-class="{done: task.completed}">{{task.title}}</span>
+                        <button class="button button-{{goal.color}}" ng-click="taskCompleted(task)">
+                            <i class="icon ion-checkmark"></i>
+                        </button>
                 </ion-item>
                 <ion-item class="item item-icon-left" ng-show="isGoalShown(goal)" ng-click="addTask(goal)">
-                   <i class="icon ion-ios-plus-empty"></i>
-                    Action Step
+                    <i class="icon ion-ios-plus-empty"></i> Action Step
                 </ion-item>
             </div>
         </ion-list>

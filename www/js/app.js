@@ -142,9 +142,11 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
             $state.go('tabs.goal_overview');
         } else { // Add new goal
             goal.task = [];
+            
             goal.id = Math.round((Math.random() * 10) * 10);
+            
+            
             goalService.addGoal(goal);
-            //console.log('Goal', goalService.getGoals);
             $state.get('tabs.create_task').data.goal = goal;
             $state.go('tabs.create_task');
         }
@@ -183,7 +185,8 @@ LightHouse.service('goalService', function () {
                 {
                     title: 'Eating a salad',
                     freq: 4,
-                    priority: 'low'
+                    priority: 'low',
+                    completed: false
                     }
                 ]
        }, {
@@ -195,7 +198,8 @@ LightHouse.service('goalService', function () {
                 {
                     title: 'Running on the treadmill',
                     freq: 3,
-                    priority: 'medium'
+                    priority: 'medium',
+                    completed: false
                     }
                 ]
                 },
@@ -208,7 +212,8 @@ LightHouse.service('goalService', function () {
                 {
                     title: 'Review lecture notes',
                     freq: 5,
-                    priority: 'high'
+                    priority: 'high',
+                    completed: false
                     }
                 ]
                 },
@@ -285,6 +290,11 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
         $state.go('tabs.create_goal', {
             obj: goal
         });
+    };
+    
+    $scope.taskCompleted =function(task) {
+        task.completed = (task.completed) ? false : true;
+        
     };
 
     /*

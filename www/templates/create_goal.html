@@ -1,28 +1,61 @@
 <ion-view view-title="Create Goal">
 
     <ion-content class="has-subheader">
-        
-            <div class="goal_creation">
-                <p class="padding">Please input information about your goal:</p>
-            </div>
 
-            <div class="list padding">
-               <form name="form" ng-model="form">
-               <div ng-init="setForm(form);"></div>
-                <label class="item item-input padding">
-                    <input name="goal.name"type="text" placeholder="Goal Title" ng-model="goal.name">
-                </label>
-                <p class="padding">Please select a color:</p>
-                <div class="padding button-bar buttonGroup">
-                    <ion-radio ng-model="goal.color" value="calm" id="calmRadio">Calm</ion-radio>
-                    <ion-radio ng-model="goal.color" value="positive" id="positiveRadio">Positive</ion-radio>
-                    <ion-radio ng-model="goal.color" value="energized" id="energizedRadio">Energized</ion-radio>
-                    <ion-radio ng-model="goal.color" value="balanced" id="balancedRadio">Balanced</ion-radio>
-                    <ion-radio ng-model="goal.color" value="assertive" id="assertiveRadio">Assertive</ion-radio>
+        <div class="goal_creation">
+            <p class="padding">Please input information about your goal:</p>
+        </div>
+
+        <div class="list padding">
+            <label class="item item-input padding">
+                <input name="goal.name" type="text" placeholder="Goal Title" ng-model="goal.name">
+            </label>
+            <p class="padding">Please select a color:</p>
+            <div class="row">
+                <div class="button-bar buttonGroup icon-padding col-100">
+                    <ion-radio ng-model="goal.color" value="calm" id="calmRadio" name="color"></ion-radio>
+                    <ion-radio ng-model="goal.color" value="positive" id="positiveRadio" name="color"></ion-radio>
+                    <ion-radio ng-model="goal.color" value="energized" id="energizedRadio" name="color"></ion-radio>
+                    <ion-radio ng-model="goal.color" value="balanced" id="balancedRadio" name="color"></ion-radio>
+                    <ion-radio ng-model="goal.color" value="assertive" id="assertiveRadio" name="color"></ion-radio>
                 </div>
-                <button class="button button-royal button-block" ng-click="createGoal(goal)">Continue</button>
-                </form>
             </div>
-        
+            <p class="padding">Choose your icon</p>
+            <div class="row">
+                <div class="padding button-bar buttonGroup icon-padding col-100">
+                    <ion-radio ng-model="goal.icon" value="ion-android-walk"><i class="icon ion-android-walk" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-university"><i class="icon ion-university" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-fork"> <i class="icon ion-fork" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-android-contacts"><i class="icon ion-android-contacts" name="icon"></i></ion-radio>
+                </div>
+            </div>
+            <div class="row">
+                <div class="padding button-bar buttonGroup icon-padding col-100">
+                    <ion-radio ng-model="goal.icon" value="ion-paintbrush"><i class="icon ion-paintbrush" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-ios-basketball"><i class="icon ion-ios-basketball" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-social-usd"> <i class="icon ion-social-usd" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-ribbon-b"> <i class="icon ion-ribbon-b" name="icon"></i></ion-radio>
+                </div>
+            </div>
+            <div class="row">
+                <div class="padding button-bar buttonGroup icon-padding col-100">
+                    <ion-radio ng-model="goal.icon" value="ion-wineglass"> <i class="icon ion-wineglass" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-ios-calculator"> <i class="icon ion-ios-calculator" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-erlenmeyer-flask"> <i class="icon ion-erlenmeyer-flask" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-ios-alarm"> <i class="icon ion-ios-alarm" name="icon"></i></ion-radio>
+                </div>
+            </div>
+            <div class="row">
+                <div class="padding button-bar buttonGroup icon-padding col-100">
+                    <ion-radio ng-model="goal.icon" value="ion-ios-paw"> <i class="icon ion-ios-paw" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-flag"> <i class="icon ion-flag" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-model-s"> <i class="icon ion-model-s" name="icon"></i></ion-radio>
+                    <ion-radio ng-model="goal.icon" value="ion-ios-book"> <i class="icon ion-ios-book" name="icon"></i></ion-radio>
+                </div>
+            </div>
+            <button class="button button-royal button-block" ng-click="createGoal(goal)">Continue</button>
+        </div>
+
+
     </ion-content>
 </ion-view>
