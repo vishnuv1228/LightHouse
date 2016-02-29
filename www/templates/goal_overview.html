@@ -8,8 +8,9 @@
         <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
         </ion-refresher>
 
-        <h2 class="padding title">Willa's Goal Progress</h2>
+        <h2 class="padding title">Goal Progress</h2>
 
+        <progress max= "{{prog.total}}" value="{{prog.progress}}"></progress>
         <!--        <just-gage id="test1" class="someClass" min="0" max="100" value="42" title="Test 1"></just-gage>-->
 
 
@@ -41,7 +42,7 @@
                         <i class="icon ion-edit"></i>
                     </ion-option-button>
                     <span ng-class="{done: task.completed}">{{task.title}}</span>
-                    <button class="button button-{{goal.color}}" ng-click="taskCompleted(task)">
+                    <button class="button button-{{goal.color}}" ng-click="taskCompleted(task, goal)">
                         <i class="icon ion-checkmark"></i>
                     </button>
                 </ion-item>

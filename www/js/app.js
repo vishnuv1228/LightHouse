@@ -124,7 +124,8 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
         $scope.goal = {
             color: goalFromPrev.color,
             name: goalFromPrev.name,
-            icon: goalFromPrev.icon
+            icon: goalFromPrev.icon,
+            freq: goalFromPrev.freq
         };
     }
 
@@ -143,10 +144,10 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
             $state.go('tabs.goal_overview');
         } else { // Add new goal
             goal.task = [];
-            
+
             goal.id = Math.round((Math.random() * 10) * 10);
-            
-            
+
+
             goalService.addGoal(goal);
             $state.get('tabs.create_task').data.goal = goal;
             $state.go('tabs.create_task');
@@ -161,13 +162,12 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
     var goalFromPrev = $state.params.obj;
     var taskFromPrev = $state.params.obj1;
-   // var goalBank = ListFactory.getList();
-    
-    
+    // var goalBank = ListFactory.getList();
+
+
     if (taskFromPrev !== null) {
         $scope.task = {
             title: taskFromPrev.title,
-            freq: taskFromPrev.freq,
             priority: taskFromPrev.priority
         };
     }
@@ -178,18 +178,18 @@ LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goa
             goalService.addTask(goalFromPrev, task);
         } else if (taskFromPrev !== null) {
             var goalBank = goalService.getGoals();
-             for (var i = 0; i < goalBank.length; i++) {
-                 for (var j = 0; j < goalBank[i].task.length; j++) {
-                     if (goalBank[i].task[j].id == taskFromPrev.id) {
-                         goalBank[i].task[j].freq = task.freq;
-                         goalBank[i].task[j].priority = task.priority;
-                         goalBank[i].task[j].title = task.title;
-                         break;
-                     }
-                 }
-             }
-            
-        }else {
+            for (var i = 0; i < goalBank.length; i++) {
+                for (var j = 0; j < goalBank[i].task.length; j++) {
+                    if (goalBank[i].task[j].id == taskFromPrev.id) {
+                        goalBank[i].task[j].freq = task.freq;
+                        goalBank[i].task[j].priority = task.priority;
+                        goalBank[i].task[j].title = task.title;
+                        break;
+                    }
+                }
+            }
+
+        } else {
             goalService.addTask($state.current.data.goal, task);
         }
         //var goalBank1 = ListFactory.getList();
@@ -200,33 +200,37 @@ LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goa
 
 LightHouse.service('goalService', function () {
     var currGoal = {};
+    var counter = 0;
+
     var goals = [
         {
 
             name: 'Healthy Eating',
             color: 'positive',
+            freq: 4,
             icon: 'ion-fork',
             id: 1,
             task: [
                 {
                     title: 'Eating a salad',
-                    freq: '4',
                     priority: 'low',
                     completed: false,
+                    numCompleted: 0,
                     id: 1
                     }
                 ]
        }, {
             name: 'Physical Fitness',
             color: 'energized',
+            freq: 3,
             icon: 'ion-android-walk',
             id: 2,
             task: [
                 {
                     title: 'Running on the treadmill',
-                    freq: '3',
                     priority: 'medium',
                     completed: false,
+                    numCompleted: 0,
                     id: 2
                     }
                 ]
@@ -234,14 +238,15 @@ LightHouse.service('goalService', function () {
         {
             name: 'Academic Performance',
             color: 'calm',
+            freq: 5,
             icon: 'ion-university',
             id: 3,
             task: [
                 {
                     title: 'Review lecture notes',
-                    freq: '5',
                     priority: 'high',
                     completed: false,
+                    numCompleted: 0,
                     id: 3
                     }
                 ]
@@ -265,11 +270,19 @@ LightHouse.service('goalService', function () {
         }
     };
 
+
     return {
         addGoal: addGoal,
         getGoals: getGoals,
         addTask: addTask,
         currGoal: currGoal,
+        totalFreq: function () {
+            for (var i = 0; i < goals.length; i++) {
+                counter += goals[i].freq;
+            }
+
+            return counter;
+        }
     };
 
 
@@ -278,6 +291,13 @@ LightHouse.service('goalService', function () {
 
 LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
 
+
+
+    $scope.prog = {
+        progress: 0,
+        total: goalService.totalFreq()
+        
+    };
 
     if (ListFactory.getList().length === 0) {
         $scope.goals = goalService.getGoals();
@@ -300,7 +320,7 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
         $scope.goals.splice($scope.goals.indexOf(goal), 1);
         ListFactory.setList($scope.goals);
     };
-    
+
     $scope.onTaskDelete = function (goal, task) {
         for (var i = 0; i < $scope.goals.length; i++) {
             if ($scope.goals[i].id === goal.id) {
@@ -322,11 +342,19 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
             obj: goal
         });
     };
-    
-    $scope.taskCompleted =function(task) {
+
+    $scope.taskCompleted = function (task, goal) {
         task.completed = (task.completed) ? false : true;
+        if (task.completed) {
+            task.numCompleted += 1;
+        } else if (task.completed === false) {
+            task.numCompleted -= 1;
+        }
+        
+        $scope.prog.progress = task.numCompleted;
+
     };
-    
+
     $scope.toggleEditTask = function (task) {
         $state.go('tabs.create_task', {
             obj1: task
