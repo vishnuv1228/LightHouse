@@ -68,7 +68,8 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     .state('tabs.create_task', {
         url: '/create_task',
         params: {
-            obj: null
+            obj: null,
+            obj1: null
         },
         views: {
             'create_goal-tab': {
@@ -159,14 +160,39 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 // 
 LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
     var goalFromPrev = $state.params.obj;
+    var taskFromPrev = $state.params.obj1;
+    
+    
+    if (taskFromPrev !== null) {
+        $scope.task = {
+            title: taskFromPrev.title,
+            freq: taskFromPrev.freq,
+            priority: taskFromPrev.priority
+        };
+    }
 
     $scope.createTask = function (task) {
+        // Assign an id to this new task
+        
+        task.id = Math.round((Math.random() * 10) * 10);
+          var goalBank = ListFactory.getList();
         if (goalFromPrev !== null) {
             goalService.addTask(goalFromPrev, task);
-        } else {
+        } else if (taskFromPrev !== null) {
+             for (var i = 0; i < goalBank.length; i++) {
+                 for (var j = 0; j < goalBank[i].task.length; j++) {
+                     if (goalBank[i].task[j].id == taskFromPrev.id) {
+                         goalBank[i].task[j].freq = task.freq;
+                         goalBank[i].task[j].priority = task.priority;
+                         goalBank[i].task[j].title = task.title;
+                         break;
+                     }
+                 }
+             }
+            
+        }else {
             goalService.addTask($state.current.data.goal, task);
         }
-        var goalBank = goalService.getGoals();
         ListFactory.setList(goalBank);
         $state.go('tabs.goal_overview');
     };
@@ -184,9 +210,10 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Eating a salad',
-                    freq: 4,
+                    freq: '4',
                     priority: 'low',
-                    completed: false
+                    completed: false,
+                    id: 1
                     }
                 ]
        }, {
@@ -197,9 +224,10 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Running on the treadmill',
-                    freq: 3,
+                    freq: '3',
                     priority: 'medium',
-                    completed: false
+                    completed: false,
+                    id: 2
                     }
                 ]
                 },
@@ -211,9 +239,10 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Review lecture notes',
-                    freq: 5,
+                    freq: '5',
                     priority: 'high',
-                    completed: false
+                    completed: false,
+                    id: 3
                     }
                 ]
                 },
@@ -294,7 +323,12 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
     
     $scope.taskCompleted =function(task) {
         task.completed = (task.completed) ? false : true;
-        
+    };
+    
+    $scope.toggleEditTask = function (task) {
+        $state.go('tabs.create_task', {
+            obj1: task
+        });
     };
 
     /*

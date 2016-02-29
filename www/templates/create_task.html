@@ -40,14 +40,14 @@
             <p class="padding">Select a priority</p>
             <div class="row">
                 <div class="col-100 padding button-bar buttonGroup ">
-                    <ion-radio ng-model="task.priority">
-                        <i class="ion-ios-star-outline"></i>
+                    <ion-radio ng-model="task.priority" value="low" name="priority">
+                        <i class="icon ion-ios-star-outline"></i>
                     </ion-radio>
-                    <ion-radio ng-model="task.priority">
-                        <i class="ion-ios-star-half"></i>
+                    <ion-radio ng-model="task.priority" value="medium" name="priority">
+                        <i class="icon ion-ios-star-half"></i>
                     </ion-radio>
-                    <ion-radio ng-model="task.priority">
-                        <i class="ion-ios-star"></i>
+                    <ion-radio ng-model="task.priority" value="high" name="priority">
+                        <i class="icon ion-ios-star"></i>
                     </ion-radio>
                 </div>
             </div>

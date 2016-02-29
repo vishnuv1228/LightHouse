@@ -37,10 +37,13 @@
                 </ion-item>
                 <ion-item class="item item-button-right padding-task" ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">
                     <ion-delete-button class="ion-minus-circled" ng-click="onTaskDelete(goal, task)"></ion-delete-button>
-                        <span ng-class="{done: task.completed}">{{task.title}}</span>
-                        <button class="button button-{{goal.color}}" ng-click="taskCompleted(task)">
-                            <i class="icon ion-checkmark"></i>
-                        </button>
+                    <ion-option-button class="button-dark" ng-click="toggleEditTask(task)">
+                        <i class="icon ion-edit"></i>
+                    </ion-option-button>
+                    <span ng-class="{done: task.completed}">{{task.title}}</span>
+                    <button class="button button-{{goal.color}}" ng-click="taskCompleted(task)">
+                        <i class="icon ion-checkmark"></i>
+                    </button>
                 </ion-item>
                 <ion-item class="item item-icon-left" ng-show="isGoalShown(goal)" ng-click="addTask(goal)">
                     <i class="icon ion-ios-plus-empty"></i> Action Step
