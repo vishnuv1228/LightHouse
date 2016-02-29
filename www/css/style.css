@@ -1,43 +1,26 @@
 #calmRadio.item-radio .item-content{
     background-color:  #43cee6;
+    height:50px;
 }
-/*
-#calmRadio {
-    width: 20%;
-}
-*/
+
 #positiveRadio.item-radio .item-content{
     background-color: #4a87ee;
+     height:50px;
 }
-/*
-#positiveRadio {
-    width:20%;
-}
-*/
+
 #energizedRadio.item-radio .item-content{
     background-color: #f0b840;
+     height:50px;
 }
-/*
-#energizedRadio{
-    width:20%;
-}
-*/
 #balancedRadio.item-radio .item-content{
     background-color:  #66cc33;
+     height:50px;
 }
-/*
-#balancedRadio{
-    width:20%;
-}
-*/
+
 #assertiveRadio.item-radio .item-content{
     background-color: #ef4e3a;
+     height:50px;
 }
-/*
-#assertiveRadio{
-    width:20%;
-}
-*/
 .list .item.item-accordion {
   line-height: 38px;
   padding-top: 0;
