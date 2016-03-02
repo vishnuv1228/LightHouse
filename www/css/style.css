@@ -50,7 +50,7 @@
     padding-right:5px;
 }
 progress[value] {
-  width: 250px;
   height: 20px;
+    width: 250px;    
 
 }

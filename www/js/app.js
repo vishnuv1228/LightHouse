@@ -270,6 +270,7 @@ LightHouse.service('goalService', function () {
         }
     };
 
+    var totalCompleted = 0;
 
     return {
         addGoal: addGoal,
@@ -282,7 +283,8 @@ LightHouse.service('goalService', function () {
             }
 
             return counter;
-        }
+        },
+        totalCompleted: totalCompleted
     };
 
 
@@ -347,11 +349,13 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
         task.completed = (task.completed) ? false : true;
         if (task.completed) {
             task.numCompleted += 1;
+            goalService.totalCompleted += 1;
         } else if (task.completed === false) {
             task.numCompleted -= 1;
+            goalService.totalCompleted -= 1;
         }
         
-        $scope.prog.progress = task.numCompleted;
+        $scope.prog.progress = goalService.totalCompleted;   
 
     };
 
