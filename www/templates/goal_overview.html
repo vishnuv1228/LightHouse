@@ -33,7 +33,7 @@
                         <i class="icon ion-edit"></i>
                     </ion-option-button>
                     <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(goal)"></ion-delete-button>
-                    <i class="goal_info icon {{goal.icon}}" ng-class="isGoalShown(goal)"></i> &nbsp; {{goal.name}}
+                    <i class="goal_info icon {{goal.icon}}" ng-class="isGoalShown(goal)"></i> &nbsp; {{goal.name}} {{goal.completed}}/{{goal.freq}}
 
                 </ion-item>
                 <ion-item class="item item-button-right padding-task" ng-repeat="task in goal.task" ng-show="isGoalShown(goal)">

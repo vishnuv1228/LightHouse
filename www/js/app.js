@@ -210,6 +210,7 @@ LightHouse.service('goalService', function () {
             freq: 4,
             icon: 'ion-fork',
             id: 1,
+            completed: 0,
             task: [
                 {
                     title: 'Eating a salad',
@@ -225,6 +226,7 @@ LightHouse.service('goalService', function () {
             freq: 3,
             icon: 'ion-android-walk',
             id: 2,
+            completed: 0,
             task: [
                 {
                     title: 'Running on the treadmill',
@@ -241,6 +243,7 @@ LightHouse.service('goalService', function () {
             freq: 5,
             icon: 'ion-university',
             id: 3,
+            completed: 0,
             task: [
                 {
                     title: 'Review lecture notes',
@@ -293,12 +296,10 @@ LightHouse.service('goalService', function () {
 
 LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
 
-
-
     $scope.prog = {
         progress: 0,
         total: goalService.totalFreq()
-        
+
     };
 
     if (ListFactory.getList().length === 0) {
@@ -350,12 +351,14 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
         if (task.completed) {
             task.numCompleted += 1;
             goalService.totalCompleted += 1;
+            goal.completed += 1;
         } else if (task.completed === false) {
             task.numCompleted -= 1;
             goalService.totalCompleted -= 1;
+            goal.completed -= 1;
         }
-        
-        $scope.prog.progress = goalService.totalCompleted;   
+
+        $scope.prog.progress = goalService.totalCompleted;
 
     };
 
