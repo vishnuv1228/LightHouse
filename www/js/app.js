@@ -32,6 +32,12 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     //    alert($scope.numberSelection); 
 })
 
+.controller('MainCtrl', function($scope, $ionicSideMenuDelegate) {
+    $scope.toggleLeft = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
+})
+
 
 
 .config(function ($stateProvider, $urlRouterProvider) {
@@ -41,6 +47,12 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
             templateUrl: 'templates/sign_in.html',
             controller: 'SignInCtrl'
         })
+    
+    .state('sidemenu', {
+      url: "/side",
+      abstract: true,
+      templateUrl: "templates/side-menu.html"
+    })
 
     .state('create_account', {
         url: '/create_account',
@@ -49,10 +61,15 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     })
 
 
-    .state('goal_overview', {
+    .state('sidemenu.goal_overview', {
         url: '/goal_overview',
-        templateUrl: 'templates/goal_overview.html',
-        controller: 'GoalOverviewCtrl'
+         views: {
+            'menuContent' :{
+                templateUrl: "templates/goal_overview.html",
+                 controller: 'GoalOverviewCtrl'
+            }
+         }
+       
     })
 
     .state('create_task', {
@@ -77,13 +94,13 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
         controller: 'CreateGoalCtrl'
 
     });
-    $urlRouterProvider.otherwise('/sign_in');
+    $urlRouterProvider.otherwise('/sidemenu.goal_overview');
 })
 
 .controller('SignInCtrl', function ($scope, $state) {
     $scope.signIn = function (user) {
         console.log('Sign-In', user);
-        $state.go('goal_overview');
+        $state.go('sidemenu.goal_overview');
     };
     $scope.createAccount = function () {
         $state.go('create_account');
@@ -124,7 +141,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
                 }
             }
             ListFactory.setList(goalBank);
-            $state.go('goal_overview');
+            $state.go('sidemenu.goal_overview');
         } else { // Add new goal
             goal.task = [];
 
@@ -177,7 +194,7 @@ LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goa
         }
         //var goalBank1 = ListFactory.getList();
         //ListFactory.setList(goalBank1);
-        $state.go('goal_overview');
+        $state.go('sidemenu.goal_overview');
     };
 }]);
 
@@ -275,12 +292,6 @@ LightHouse.service('goalService', function () {
 
 
 });
-
-function ContentController($scope, $ionicSideMenuDelegate) {
-    $scope.toggleLeft = function () {
-        $ionicSideMenuDelegate.toggleLeft();
-    };
-}
 
 LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
 
