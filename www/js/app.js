@@ -49,50 +49,33 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     })
 
 
-    .state('tabs', {
-        url: '/tab',
-        abstract: true,
-        templateUrl: 'templates/tabs.html'
-    })
-
-    .state('tabs.goal_overview', {
+    .state('goal_overview', {
         url: '/goal_overview',
-        views: {
-            'create_goal-tab': {
-                templateUrl: 'templates/goal_overview.html',
-                controller: 'GoalOverviewCtrl'
-            }
-        }
+        templateUrl: 'templates/goal_overview.html',
+        controller: 'GoalOverviewCtrl'
     })
 
-    .state('tabs.create_task', {
+    .state('create_task', {
         url: '/create_task',
         params: {
             obj: null,
             obj1: null
         },
-        views: {
-            'create_goal-tab': {
-                templateUrl: 'templates/create_task.html',
-                controller: 'CreateTaskCtrl'
-            }
-        },
+        templateUrl: 'templates/create_task.html',
+        controller: 'CreateTaskCtrl',
         data: {
             goal: null
         }
     })
 
-    .state('tabs.create_goal', {
+    .state('create_goal', {
         url: '/create_goal',
         params: {
             obj: null
         },
-        views: {
-            'create_goal-tab': {
-                templateUrl: 'templates/create_goal.html',
-                controller: 'CreateGoalCtrl'
-            }
-        }
+        templateUrl: 'templates/create_goal.html',
+        controller: 'CreateGoalCtrl'
+
     });
     $urlRouterProvider.otherwise('/sign_in');
 })
@@ -100,7 +83,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
 .controller('SignInCtrl', function ($scope, $state) {
     $scope.signIn = function (user) {
         console.log('Sign-In', user);
-        $state.go('tabs.goal_overview');
+        $state.go('goal_overview');
     };
     $scope.createAccount = function () {
         $state.go('create_account');
@@ -110,7 +93,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
 .controller('AccountCreationCtrl', function ($scope, $state) {
     $scope.userInfo = function (user) {
         console.log('Account', user);
-        $state.go('tabs.create_goal');
+        $state.go('create_goal');
     };
 });
 
@@ -141,7 +124,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
                 }
             }
             ListFactory.setList(goalBank);
-            $state.go('tabs.goal_overview');
+            $state.go('goal_overview');
         } else { // Add new goal
             goal.task = [];
 
@@ -149,8 +132,8 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 
 
             goalService.addGoal(goal);
-            $state.get('tabs.create_task').data.goal = goal;
-            $state.go('tabs.create_task');
+            $state.get('create_task').data.goal = goal;
+            $state.go('create_task');
         }
 
 
@@ -194,7 +177,7 @@ LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goa
         }
         //var goalBank1 = ListFactory.getList();
         //ListFactory.setList(goalBank1);
-        $state.go('tabs.goal_overview');
+        $state.go('goal_overview');
     };
 }]);
 
@@ -293,6 +276,11 @@ LightHouse.service('goalService', function () {
 
 });
 
+function ContentController($scope, $ionicSideMenuDelegate) {
+    $scope.toggleLeft = function () {
+        $ionicSideMenuDelegate.toggleLeft();
+    };
+}
 
 LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
 
@@ -335,13 +323,13 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
     };
 
     $scope.addTask = function (goal) {
-        $state.go('tabs.create_task', {
+        $state.go('create_task', {
             obj: goal
         });
     };
 
     $scope.toggleEdit = function (goal) {
-        $state.go('tabs.create_goal', {
+        $state.go('create_goal', {
             obj: goal
         });
     };
@@ -363,7 +351,7 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
     };
 
     $scope.toggleEditTask = function (task) {
-        $state.go('tabs.create_task', {
+        $state.go('create_task', {
             obj1: task
         });
     };
