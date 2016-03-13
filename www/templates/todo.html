@@ -1,0 +1,21 @@
+<ion-view view-title="To Do List">
+ <ion-nav-buttons side="primary">
+        <button class="button button-icon ion-minus-circled" ng-click="data.showDelete = !data.showDelete;">
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <button class="button button-icon" ng-click="newTask()">
+            <i class="icon ion-compose"></i> Add a Task
+        </button>
+        <ion-list show-delete="data.showDelete">
+            <ion-item ng-repeat="task in tasks" class="item item-button-right padding-task">
+               <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task)"></ion-delete-button>
+                <span ng-class="{done: task.completed}">{{task.title}}</span>   
+                <button class="button button-royal" ng-click="taskCompleted(task)">
+                        <i class="icon ion-checkmark"></i>
+                    </button>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+</ion-view>

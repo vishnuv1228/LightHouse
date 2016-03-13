@@ -10,23 +10,11 @@
 
         <h2 class="padding title">Goal Progress</h2>
 
-        <progress max= "{{prog.total}}" value="{{prog.progress}}"></progress>
+        <progress max="{{prog.total}}" value="{{prog.progress}}"></progress>
         <!--        <just-gage id="test1" class="someClass" min="0" max="100" value="42" title="Test 1"></just-gage>-->
 
 
         <a class="button button-royal button-block" href="#/create_goal">Create a Goal</a>
-        
-        
-        
-        <!-- ITEMS IN GOALS dynamic
-
-        <div class="list">
-        <a ng-repeat="item in goals" class=" item item-icon-left {{item.color}}">
-         <i class="icon {{item.icon}}"></i>
-          {{item.name}}
-        </a>
-      </div>
--->
 
 
         <ion-list show-delete="data.showDelete">
@@ -56,43 +44,6 @@
         </ion-list>
 
 
-        <!-- MODALS
-    <div class="buttons">
-        <button class="button button-icon ion-compose" ng-click="modal.show()">
-        </button>
-      </div>
-        
--->
-       
     </ion-content>
-    
-    <!--
-     MODALS
-    <script id="templates/goal_overview.html" type="text/ng-template">
-    <ion-modal-view>
-        <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">New Contact</h1>
-            <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
-        </ion-header-bar>
-        <ion-content class="padding">
-            <div class="list">
-                <label class="item item-input">
-                    <span class="input-label">First Name</span>
-                    <input ng-model="newUser.firstName" type="text">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Last Name</span>
-                    <input ng-model="newUser.lastName" type="text">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Email</span>
-                    <input ng-model="newUser.email" type="text">
-                </label>
-                <button class="button button-full button-positive" ng-click="createContact(newUser)">Create</button>
-            </div>
-        </ion-content>
-    </ion-modal-view>
-</script>    
--->
 
 </ion-view>
