@@ -75,8 +75,17 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
             }
 
         })
-    
+    // Add controller for calendar below templateUrl to add functionality
+     .state('sidemenu.calendar', {
+            url: "/calendar",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/calendar.html"
+                }
+            }
 
+        })
+    
     .state('create_account', {
         url: '/create_account',
         templateUrl: 'templates/create_account.html',
