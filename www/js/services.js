@@ -43,4 +43,26 @@ angular.module('starter.services', [])
       }
     };
     return listSrv;
+  })
+.factory('DeadlinesFactory', function() {
+     var list = [];
+    var listStore = localStorage.getItem("deadlines");
+    if (listStore !== null && listStore !== '' && angular.isArray(angular.fromJson(listStore))) {
+      list = angular.fromJson(listStore);
+    }
+    var listSrv = {
+      setList: function(newList) {
+        list = newList;
+        localStorage.setItem("deadlines", angular.toJson(list));
+        return true;
+      },
+      getList: function() {
+        if (list !== null) {
+          return list;
+        } else {
+          return [];
+        }
+      }
+    };
+    return listSrv;
   });

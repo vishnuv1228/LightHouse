@@ -1,0 +1,19 @@
+<ion-view view-title="Deadlines">
+    <ion-nav-buttons side="primary">
+        <button class="button button-icon ion-minus-circled" ng-click="data.showDelete = !data.showDelete;">
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <button class="button button-icon" ng-click="newDeadline()">
+            <i class="icon ion-compose"></i> Add a Deadline
+        </button>
+        <ion-list show-delete="data.showDelete">
+            <ion-item ng-repeat="deadline in deadlines | orderBy: 'date'">
+               <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(deadline)"></ion-delete-button>
+                <span>{{deadline.title}}</span> 
+                <span class="item-note">{{deadline.date | date: "MM-dd-yyyy"}}</span>
+            </ion-item>
+        </ion-list>
+        
+    </ion-content>
+</ion-view>
