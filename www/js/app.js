@@ -127,6 +127,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     };
      $scope.onItemDelete = function (deadline) {
         $scope.deadlines.splice($scope.deadlines.indexOf(deadline), 1);
+        DeadlinesFactory.setList($scope.deadlines);
     };
      // Create and load the Modal
     $ionicModal.fromTemplateUrl('templates/create_deadline.html', function (modal) {
@@ -166,6 +167,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     
     $scope.onItemDelete = function (task) {
         $scope.tasks.splice($scope.tasks.indexOf(task), 1);
+        TaskFactory.setList($scope.tasks);
     };
     
     $scope.taskCompleted = function (task) {
