@@ -1,0 +1,19 @@
+<ion-view view-title="Reflection">
+
+    <ion-content class="has-subheader">
+        <div>
+             <p class="padding">These are the tasks you completed today.</p>
+            <div ng-repeat="goal in goals track by goal.id">
+                    {{goal.name}}
+                <div ng-repeat="tasks in goal">
+                    <ion-item ng-repeat="task in tasks track by task.id ">{{task.title}} completed={{task.completed}}</ion-item>
+                </div>
+            </div>
+             <p class="padding">Please reflect on the tasks you have completed today.</p>
+            <textarea class="padding" style="border:solid 1px black; margin-left:10px; margin-top:10px;" rows="10" cols="50" ngModel=reflection.text></textarea>
+            <button class="button button-block button-royal" ng-click="schedule()">
+                Schedule your next day
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

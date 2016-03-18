@@ -4,10 +4,14 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 //var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
-var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services','ngCordova'])
+var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
+        if (device.platform == "iOS") {
+            window.plugin.notification.local.promptForPermission();
+        }
+
         if (window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -63,20 +67,20 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services','ngCo
             }
 
         })
-    
+
     .state('sidemenu.deadlines', {
             url: "/deadlines",
             views: {
                 'menuContent': {
                     templateUrl: "templates/deadlines.html",
                     controller: 'DeadlinesCtrl'
-                    
+
                 }
             }
 
         })
-    // Add controller for calendar below templateUrl to add functionality
-     .state('sidemenu.calendar', {
+        // Add controller for calendar below templateUrl to add functionality
+        .state('sidemenu.calendar', {
             url: "/calendar",
             views: {
                 'menuContent': {
@@ -85,7 +89,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services','ngCo
             }
 
         })
-    
+
     .state('create_account', {
         url: '/create_account',
         templateUrl: 'templates/create_account.html',
@@ -125,94 +129,106 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services','ngCo
         templateUrl: 'templates/create_goal.html',
         controller: 'CreateGoalCtrl'
 
-    });
+    })
+
+    .state('schedule_prompt', {
+        url: '/schedule_prompt',
+        templateUrl: 'templates/schedule_prompt.html',
+        controller: 'SchedulePromptCtrl'
+    })
+
+    .state('reflection', {
+        url: '/reflection',
+        templateUrl: 'templates/reflection.html',
+        controller: 'ReflectionCtrl'
+    })
     $urlRouterProvider.otherwise('/sign_in');
 })
 
-.controller('DeadlinesCtrl', function($scope, $ionicModal, DeadlinesFactory) {
-    $scope.deadlines = DeadlinesFactory.getList();
-    $scope.data = {
-        showDelete: false
-    };
-     $scope.onItemDelete = function (deadline) {
-        $scope.deadlines.splice($scope.deadlines.indexOf(deadline), 1);
-        DeadlinesFactory.setList($scope.deadlines);
-    };
-     // Create and load the Modal
-    $ionicModal.fromTemplateUrl('templates/create_deadline.html', function (modal) {
-        $scope.deadlineModal = modal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up'
-    });
-    // Open our new task modal
-    $scope.newDeadline = function () {
-        $scope.deadlineModal.show();
-    };
-    
-    // Close the new task modal
-    $scope.closeNewTask = function () {
-        $scope.deadlineModal.hide();
-    };
-    
-    // Called when the form is submitted
-    $scope.createDeadline = function (deadline) {
-        $scope.deadlines.push({
-            title: deadline.title,
-            date: deadline.date
+.controller('DeadlinesCtrl', function ($scope, $ionicModal, DeadlinesFactory) {
+        $scope.deadlines = DeadlinesFactory.getList();
+        $scope.data = {
+            showDelete: false
+        };
+        $scope.onItemDelete = function (deadline) {
+            $scope.deadlines.splice($scope.deadlines.indexOf(deadline), 1);
+            DeadlinesFactory.setList($scope.deadlines);
+        };
+        // Create and load the Modal
+        $ionicModal.fromTemplateUrl('templates/create_deadline.html', function (modal) {
+            $scope.deadlineModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
         });
-        DeadlinesFactory.setList($scope.deadlines);
-        $scope.deadlineModal.hide();
-        deadline.title = "";
-       
-    };
-    
-    
-    
-})
-.controller('TodoCtrl', function ($scope, $ionicModal, TaskFactory) {
-    $scope.tasks = TaskFactory.getList();
-    $scope.data = {
-        showDelete: false
-    };
-    
-    $scope.onItemDelete = function (task) {
-        $scope.tasks.splice($scope.tasks.indexOf(task), 1);
-        TaskFactory.setList($scope.tasks);
-    };
-    
-    $scope.taskCompleted = function (task) {
-        task.completed = (task.completed) ? false : true;
-    };
+        // Open our new task modal
+        $scope.newDeadline = function () {
+            $scope.deadlineModal.show();
+        };
 
-    // Create and load the Modal
-    $ionicModal.fromTemplateUrl('templates/create_todo_task.html', function (modal) {
-        $scope.taskModal = modal;
-    }, {
-        scope: $scope,
-        animation: 'slide-in-up'
-    });
+        // Close the new task modal
+        $scope.closeNewTask = function () {
+            $scope.deadlineModal.hide();
+        };
 
-    // Called when the form is submitted
-    $scope.createTask = function (task) {
-        $scope.tasks.push({
-            title: task.title
+        // Called when the form is submitted
+        $scope.createDeadline = function (deadline) {
+            $scope.deadlines.push({
+                title: deadline.title,
+                date: deadline.date
+            });
+            DeadlinesFactory.setList($scope.deadlines);
+            $scope.deadlineModal.hide();
+            deadline.title = "";
+
+        };
+
+
+
+    })
+    .controller('TodoCtrl', function ($scope, $ionicModal, TaskFactory) {
+        $scope.tasks = TaskFactory.getList();
+        $scope.data = {
+            showDelete: false
+        };
+
+        $scope.onItemDelete = function (task) {
+            $scope.tasks.splice($scope.tasks.indexOf(task), 1);
+            TaskFactory.setList($scope.tasks);
+        };
+
+        $scope.taskCompleted = function (task) {
+            task.completed = (task.completed) ? false : true;
+        };
+
+        // Create and load the Modal
+        $ionicModal.fromTemplateUrl('templates/create_todo_task.html', function (modal) {
+            $scope.taskModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
         });
-        TaskFactory.setList($scope.tasks);
-        $scope.taskModal.hide();
-        task.title = "";
-    };
 
-    // Open our new task modal
-    $scope.newTask = function () {
-        $scope.taskModal.show();
-    };
+        // Called when the form is submitted
+        $scope.createTask = function (task) {
+            $scope.tasks.push({
+                title: task.title
+            });
+            TaskFactory.setList($scope.tasks);
+            $scope.taskModal.hide();
+            task.title = "";
+        };
 
-    // Close the new task modal
-    $scope.closeNewTask = function () {
-        $scope.taskModal.hide();
-    };
-})
+        // Open our new task modal
+        $scope.newTask = function () {
+            $scope.taskModal.show();
+        };
+
+        // Close the new task modal
+        $scope.closeNewTask = function () {
+            $scope.taskModal.hide();
+        };
+    })
 
 .controller('SignInCtrl', function ($scope, $state) {
     $scope.signIn = function (user) {
@@ -222,14 +238,69 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services','ngCo
     $scope.createAccount = function () {
         $state.go('create_account');
     };
+    
+    $scope.routeToReflection = function(){
+        $state.go('reflection');
+    }
 })
 
 .controller('AccountCreationCtrl', function ($scope, $state) {
     $scope.userInfo = function (user) {
         console.log('Account', user);
-        $state.go('create_goal');
+        $state.go('schedule_prompt');
     };
 });
+
+LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state', function ($scope, $state)
+    {
+        $scope.schedulePrompt = function (promptTime) {
+            var alarmTime = new Date();
+            alert(promptTime.minute);
+            alert(promptTime.hour);
+            alert(promptTime.period);
+            alarmTime.setMinutes(promptTime.minute);
+            if (promptTime.period == "AM") {
+                alert("here");
+                if (promptTime.hour == 12) {
+                    promptTime.hour = 0;
+                }
+                alarmTime.setHours(promptTime.hour);
+            } else {
+                alarmTime.setHours(promptTime.hour + 12);
+            }
+
+            alert(alarmTime.toTimeString());
+
+            cordova.plugins.notification.local.schedule({
+                id: 1,
+                title: "Lighthouse",
+                text: "It's time to reflect on today's tasks!",
+                at: alarmTime,
+                every: "day"
+            });
+
+            cordova.plugins.notification.local.on("click", function (notification) {
+                if(notification.id==1)
+                    {
+                        alert("here");
+                        $state.go('reflection');
+                    }
+            });
+
+            $state.go('create_goal');
+        };
+
+}]);
+
+LightHouse.controller('ReflectionCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService)
+    {
+        var goals=goalService.getGoals();
+        $scope.goals=goals;
+        $scope.schedule=function()
+        {
+            $state.go('sidemenu.calendar');
+        };
+}]);
 
 LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
 
@@ -273,6 +344,8 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 
     };
 }]);
+
+
 
 
 // 
@@ -332,7 +405,7 @@ LightHouse.service('goalService', function () {
                 {
                     title: 'Eating a salad',
                     priority: 'low',
-                    completed: false,
+                    completed: true,
                     numCompleted: 0,
                     id: 1
                     }
