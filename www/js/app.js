@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 //var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
-var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
+var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services','ngCordova'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -166,6 +166,8 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
         deadline.title = "";
        
     };
+    
+    
     
 })
 .controller('TodoCtrl', function ($scope, $ionicModal, TaskFactory) {
