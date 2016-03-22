@@ -84,7 +84,8 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
             url: "/calendar",
             views: {
                 'menuContent': {
-                    templateUrl: "templates/calendar.html"
+                    templateUrl: "templates/calendar.html",
+                    controller: 'CalendarCtrl'
                 }
             }
 
@@ -141,8 +142,57 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
         url: '/reflection',
         templateUrl: 'templates/reflection.html',
         controller: 'ReflectionCtrl'
-    })
+    });
     $urlRouterProvider.otherwise('/sign_in');
+})
+
+.controller('CalendarCtrl', function ($scope, goalService, CalendarFactory) {
+    var today = new Date();
+    var month = today.getMonth() + 1;
+    var d = new Date();
+    var weekday = new Array(7);
+
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+    var n = weekday[d.getDay()];
+    // The day of the week and the date
+    $scope.date = n + " " + month + "/" + today.getDate() + "/" + today.getFullYear();
+
+    // Get all action steps
+    var goals = goalService.getGoals();
+
+    // Initial setup for taskFactory
+    $scope.tasks = CalendarFactory.getList();
+    if ($scope.tasks.length === 0) {
+        tasks = [];
+        for (var i = 0; i < goals.length; i++) {
+            for (var j = 0; j < goals[i].task.length; j++) {
+                tasks.push(goals[i].task[j]);
+            }
+        }
+        $scope.tasks = tasks;
+    } 
+
+    $scope.data = {
+        showDelete: false
+    };
+
+    $scope.onItemDelete = function (task) {
+        $scope.tasks.splice($scope.tasks.indexOf(task), 1);
+        CalendarFactory.setList($scope.tasks);
+    };
+    
+     $scope.moveItem = function(task, fromIndex, toIndex) {
+            $scope.tasks.splice(fromIndex, 1);
+            $scope.tasks.splice(toIndex, 0, task);
+        };
+
 })
 
 .controller('DeadlinesCtrl', function ($scope, $ionicModal, DeadlinesFactory) {
@@ -238,10 +288,10 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     $scope.createAccount = function () {
         $state.go('create_account');
     };
-    
-    $scope.routeToReflection = function(){
+
+    $scope.routeToReflection = function () {
         $state.go('reflection');
-    }
+    };
 })
 
 .controller('AccountCreationCtrl', function ($scope, $state) {
@@ -280,11 +330,10 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state', function ($scop
             });
 
             cordova.plugins.notification.local.on("click", function (notification) {
-                if(notification.id==1)
-                    {
-                        alert("here");
-                        $state.go('reflection');
-                    }
+                if (notification.id == 1) {
+                    alert("here");
+                    $state.go('reflection');
+                }
             });
 
             $state.go('create_goal');
@@ -294,10 +343,9 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state', function ($scop
 
 LightHouse.controller('ReflectionCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService)
     {
-        var goals=goalService.getGoals();
-        $scope.goals=goals;
-        $scope.schedule=function()
-        {
+        var goals = goalService.getGoals();
+        $scope.goals = goals;
+        $scope.schedule = function () {
             $state.go('sidemenu.calendar');
         };
 }]);
