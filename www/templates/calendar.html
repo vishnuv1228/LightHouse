@@ -11,22 +11,19 @@
     </ion-nav-buttons>
     <ion-content>
         <h3 class="date">{{date}}</h3>
-              <ion-item class="item item-divider date">
-            Morning Action Steps
-        </ion-item>
-        <ion-item class="item item-divider date">
-            Afternoon Action Steps
-        </ion-item>
-        <ion-item class="item item-divider date">
-            Evening Action Steps
-        </ion-item>
+        <div class="item item-divider" ng-repeat="task in tasks">
             <ion-list class="date" show-delete="data.showDelete" show-reorder="data.showReorder">
-            <ion-item ng-repeat="task in tasks">
-                <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task)"></ion-delete-button>
-                <ion-reorder-button class="ion-navicon" on-reorder="moveItem(task, $fromIndex, $toIndex)"></ion-reorder-button>
-                {{task.title}}
-            </ion-item>
-        </ion-list>
+                {{task.priority}}
+
+                <ion-item class="{{task.color}} goal_text item item-icon-left">
+                    <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task)"></ion-delete-button>
+                    <ion-reorder-button class="ion-navicon" on-reorder="moveItem(task, $fromIndex, $toIndex)"></ion-reorder-button>
+                    <i class="goal_info icon {{task.icon}}"></i>
+                    {{task.title}}
+                </ion-item>
+            </ion-list>
+        </div>
+
 
     </ion-content>
 </ion-view>

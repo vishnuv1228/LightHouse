@@ -3,11 +3,12 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-//var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
-var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
+//var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'starter.services'])
+var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'ionic.service.analytics', 'starter.services'])
 
-.run(function ($ionicPlatform) {
+.run(function($ionicPlatform, $ionicAnalytics) {
     $ionicPlatform.ready(function () {
+        $ionicAnalytics.register();
         if (device.platform == "iOS") {
             window.plugin.notification.local.promptForPermission();
         }
@@ -25,6 +26,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
+        
     });
 })
 
@@ -146,7 +148,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     $urlRouterProvider.otherwise('/sign_in');
 })
 
-.controller('CalendarCtrl', function ($scope, goalService, CalendarFactory) {
+.controller('CalendarCtrl', function ($scope, goalService, CalendarFactory, ListFactory) {
     var today = new Date();
     var month = today.getMonth() + 1;
     var d = new Date();
@@ -165,15 +167,17 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'starter.services'])
     $scope.date = n + " " + month + "/" + today.getDate() + "/" + today.getFullYear();
 
     // Get all action steps
-    var goals = goalService.getGoals();
+    var goals = ListFactory.getList();
+    $scope.goals = goals;
 
     // Initial setup for taskFactory
     $scope.tasks = CalendarFactory.getList();
-    if ($scope.tasks.length === 0) {
-        tasks = [];
+    if ($scope.tasks.length !== ListFactory.getList().length) {
+        var tasks = [];
         for (var i = 0; i < goals.length; i++) {
             for (var j = 0; j < goals[i].task.length; j++) {
                 tasks.push(goals[i].task[j]);
+                console.log(goals[i].task[j]);
             }
         }
         $scope.tasks = tasks;
@@ -386,7 +390,9 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 
             goalService.addGoal(goal);
             $state.get('create_task').data.goal = goal;
-            $state.go('create_task');
+             $state.go('create_task', {
+                obj: goal
+            });
         }
 
 
@@ -402,17 +408,24 @@ LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goa
     var taskFromPrev = $state.params.obj1;
     // var goalBank = ListFactory.getList();
 
+    console.log(goalFromPrev);
 
     if (taskFromPrev !== null) {
         $scope.task = {
             title: taskFromPrev.title,
-            priority: taskFromPrev.priority
+            priority: taskFromPrev.priority,
+            color: taskFromPrev.color,
+            icon: taskFromPrev.color,
+            completed: taskFromPrev.completed,
+            numCompleted: taskFromPrev.numCompleted
         };
     }
 
     $scope.createTask = function (task) {
         // Assign an id to this new
         if (goalFromPrev !== null) {
+            task.color = goalFromPrev.color;
+            task.icon = goalFromPrev.icon;
             goalService.addTask(goalFromPrev, task);
         } else if (taskFromPrev !== null) {
             var goalBank = goalService.getGoals();
@@ -422,14 +435,17 @@ LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goa
                         goalBank[i].task[j].freq = task.freq;
                         goalBank[i].task[j].priority = task.priority;
                         goalBank[i].task[j].title = task.title;
+                        goalBank[i].task[j].color = goalBank[i].color;
+                        goalBank[i].task[j].icon = goalBank[i].icon;
                         break;
                     }
                 }
             }
-
-        } else {
-            goalService.addTask($state.current.data.goal, task);
         }
+
+//        } else {
+//            goalService.addTask($state.current.data.goal, task);
+//        }
         //var goalBank1 = ListFactory.getList();
         //ListFactory.setList(goalBank1);
         $state.go('sidemenu.goal_overview');
@@ -452,9 +468,11 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Eating a salad',
-                    priority: 'low',
+                    priority: 'Low',
                     completed: true,
                     numCompleted: 0,
+                    color: 'positive',
+                    icon: 'ion-fork',
                     id: 1
                     }
                 ]
@@ -468,9 +486,11 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Running on the treadmill',
-                    priority: 'medium',
+                    priority: 'Medium',
                     completed: false,
                     numCompleted: 0,
+                    color: 'energized',
+                    icon: 'ion-android-walk',
                     id: 2
                     }
                 ]
@@ -485,9 +505,11 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Review lecture notes',
-                    priority: 'high',
+                    priority: 'High',
                     completed: false,
                     numCompleted: 0,
+                    color: 'calm',
+                    icon:'ion-university',
                     id: 3
                     }
                 ]
