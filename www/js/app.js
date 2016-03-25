@@ -266,7 +266,7 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state', function ($scop
                 }
                 alarmTime.setHours(promptTime.hour);
             } else {
-                alarmTime.setHours(promptTime.hour + 12);
+                alarmTime.setHours(promptTime.hour + 19);
             }
 
             alert(alarmTime.toTimeString());
