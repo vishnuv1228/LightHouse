@@ -329,7 +329,6 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state', function ($scop
                 id: 1,
                 title: "Lighthouse",
                 text: "It's time to reflect on today's tasks!",
-                at: alarmTime,
                 every: "day"
             });
 
