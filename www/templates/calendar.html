@@ -1,5 +1,29 @@
 <ion-view view-title="Calendar">
-<ion-content>
-    <h1>Placeholder for Calendar - add html below</h1>
-</ion-content>
+    <ion-nav-buttons>
+        <button class="button button-icon ion-minus-circled" ng-click="data.showDelete = !data.showDelete;">
+        </button>
+
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon ion-navicon" ng-click="data.showReorder = !data.showReorder; data.showDelete = false;">
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <h3 class="date">{{date}}</h3>
+        <div class="item item-divider" ng-repeat="task in tasks">
+            <ion-list class="date" show-delete="data.showDelete" show-reorder="data.showReorder">
+                {{task.priority}}
+
+                <ion-item class="{{task.color}} goal_text item item-icon-left">
+                    <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task)"></ion-delete-button>
+                    <ion-reorder-button class="ion-navicon" on-reorder="moveItem(task, $fromIndex, $toIndex)"></ion-reorder-button>
+                    <i class="goal_info icon {{task.icon}}"></i>
+                    {{task.title}}
+                </ion-item>
+            </ion-list>
+        </div>
+
+
+    </ion-content>
 </ion-view>
