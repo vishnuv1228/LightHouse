@@ -212,7 +212,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     $scope.tasks.push(morningTask);
     $scope.tasks.push(afternoonTask);
     $scope.tasks.push(eveningTask);
-
+    
     $scope.data = {
         showDelete: false
     };
@@ -327,7 +327,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
 .controller('SignInCtrl', function ($scope, $state) {
     $scope.signIn = function (user) {
         console.log('Sign-In', user);
-        $state.go('sidemenu.goal_overview');
+        $state.go('sidemenu.calendar');
     };
     $scope.createAccount = function () {
         $state.go('create_account');

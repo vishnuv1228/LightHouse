@@ -60,3 +60,8 @@ progress[value] {
 .time {
     font-weight: bold;
 }
+.swipe-disabled div.item-content {
+    -webket-transition: none !important;
+    -webket-transform: none !important;
+    transform: none !important;
+}
