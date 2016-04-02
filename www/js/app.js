@@ -212,7 +212,9 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     $scope.tasks.push(morningTask);
     $scope.tasks.push(afternoonTask);
     $scope.tasks.push(eveningTask);
-    
+
+    CalendarFactory.setList($scope.tasks);
+
     $scope.data = {
         showDelete: false
     };
@@ -231,9 +233,37 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     $scope.doRefresh = function () {
         // Get all action steps
         $scope.tasks = CalendarFactory.getList();
-        $scope.$broadcast('scroll.refreshComplete');
+        var numTasks = 0;
+        var goals = ListFactory.getList();
+        for (var t = 0; t < goals.length; t++) {
+            for (var u = 0; u < goals[t].task.length; u++) {
+                numTasks++;
+            }
+        }
+        var tasks = [];
+        for (var i = 0; i < goals.length; i++) {
+            for (var j = 0; j < goals[i].task.length; j++) {
+                tasks.push(goals[i].task[j]);
+            }
+        }
+        var isDifferent = false;
+        for (var x = 0; x < $scope.tasks.length; x++) {
+            for (var s = 0; s < tasks.length; s++) {
+                if ($scope.tasks[x].title !== tasks[s].title) {
+                    isDifferent = true;
+                    break;
+                }
+            }
+        }
+        if (isDifferent) {
+            angular.extend($scope.tasks, tasks);
+        }
+   $scope.$broadcast('scroll.refreshComplete');
 
     };
+ 
+
+
 
 
 
