@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 //var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'starter.services'])
-var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'ionic.service.analytics', 'starter.services'])
+var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'starter.services', 'angular.filter'])
 
-.run(function($ionicPlatform, $ionicAnalytics) {
+.run(function ($ionicPlatform, $ionicAnalytics) {
     $ionicPlatform.ready(function () {
         $ionicAnalytics.register();
         if (device.platform == "iOS") {
@@ -26,7 +26,7 @@ var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'io
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
-        
+
     });
 })
 
@@ -166,6 +166,19 @@ var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'io
     // The day of the week and the date
     $scope.date = n + " " + month + "/" + today.getDate() + "/" + today.getFullYear();
 
+    $scope.times = [
+        {
+            category: 'Morning'
+        },
+        {
+            category: 'Afternoon'
+        },
+        {
+            category: 'Evening'
+        }
+    ];
+
+
     // Get all action steps
     var goals = ListFactory.getList();
     $scope.goals = goals;
@@ -181,7 +194,24 @@ var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'io
             }
         }
         $scope.tasks = tasks;
-    } 
+    }
+
+    // Add in 'task' objects that represent morning, afternoon, evening
+    var morningTask = {
+        title: "Morning",
+        id: 53
+    };
+    var afternoonTask = {
+        title: "Afternoon",
+        id: 54
+    };
+    var eveningTask = {
+        title: "Evening",
+        id: 55
+    };
+    $scope.tasks.push(morningTask);
+    $scope.tasks.push(afternoonTask);
+    $scope.tasks.push(eveningTask);
 
     $scope.data = {
         showDelete: false
@@ -191,11 +221,21 @@ var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'io
         $scope.tasks.splice($scope.tasks.indexOf(task), 1);
         CalendarFactory.setList($scope.tasks);
     };
-    
-     $scope.moveItem = function(task, fromIndex, toIndex) {
-            $scope.tasks.splice(fromIndex, 1);
-            $scope.tasks.splice(toIndex, 0, task);
-        };
+
+    $scope.moveItem = function (task, fromIndex, toIndex) {
+        $scope.tasks.splice(fromIndex, 1);
+        $scope.tasks.splice(toIndex, 0, task);
+        CalendarFactory.setList($scope.tasks);
+    };
+
+    $scope.doRefresh = function () {
+        // Get all action steps
+        $scope.tasks = CalendarFactory.getList();
+        $scope.$broadcast('scroll.refreshComplete');
+
+    };
+
+
 
 })
 
@@ -320,7 +360,7 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state', function ($scop
                 }
                 alarmTime.setHours(promptTime.hour);
             } else {
-                alarmTime.setHours(promptTime.hour + 19);
+                alarmTime.setHours(promptTime.hour + 12);
             }
 
             alert(alarmTime.toTimeString());
@@ -390,7 +430,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 
             goalService.addGoal(goal);
             $state.get('create_task').data.goal = goal;
-             $state.go('create_task', {
+            $state.go('create_task', {
                 obj: goal
             });
         }
@@ -443,9 +483,9 @@ LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goa
             }
         }
 
-//        } else {
-//            goalService.addTask($state.current.data.goal, task);
-//        }
+        //        } else {
+        //            goalService.addTask($state.current.data.goal, task);
+        //        }
         //var goalBank1 = ListFactory.getList();
         //ListFactory.setList(goalBank1);
         $state.go('sidemenu.goal_overview');
@@ -468,7 +508,7 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Eating a salad',
-                    priority: 'Low',
+                    priority: 'Morning',
                     completed: true,
                     numCompleted: 0,
                     color: 'positive',
@@ -486,7 +526,7 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Running on the treadmill',
-                    priority: 'Medium',
+                    priority: 'Afternoon',
                     completed: false,
                     numCompleted: 0,
                     color: 'energized',
@@ -505,11 +545,11 @@ LightHouse.service('goalService', function () {
             task: [
                 {
                     title: 'Review lecture notes',
-                    priority: 'High',
+                    priority: 'Evening',
                     completed: false,
                     numCompleted: 0,
                     color: 'calm',
-                    icon:'ion-university',
+                    icon: 'ion-university',
                     id: 3
                     }
                 ]

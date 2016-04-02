@@ -57,3 +57,6 @@ progress[value] {
 .date {
     text-align:center;
 }
+.time {
+    font-weight: bold;
+}
