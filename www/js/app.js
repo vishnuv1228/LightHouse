@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 //var LightHouse = angular.module('LightHouse', ['ionic','ionic.service.core', 'starter.services'])
-var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'starter.services', 'angular.filter'])
+var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'starter.services'])
 
 .run(function ($ionicPlatform, $ionicAnalytics) {
     $ionicPlatform.ready(function () {
