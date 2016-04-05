@@ -68,14 +68,14 @@ angular.module('starter.services', [])
   })
 .factory('CalendarFactory', function() {
      var list = [];
-    var listStore = localStorage.getItem("calendar");
+    var listStore = localStorage.getItem("calendar4");
     if (listStore !== null && listStore !== '' && angular.isArray(angular.fromJson(listStore))) {
       list = angular.fromJson(listStore);
     }
     var listSrv = {
       setList: function(newList) {
         list = newList;
-        localStorage.setItem("calendar", angular.toJson(list));
+        localStorage.setItem("calendar4", angular.toJson(list));
         return true;
       },
       getList: function() {

@@ -166,53 +166,60 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     // The day of the week and the date
     $scope.date = n + " " + month + "/" + today.getDate() + "/" + today.getFullYear();
 
-    $scope.times = [
-        {
-            category: 'Morning'
-        },
-        {
-            category: 'Afternoon'
-        },
-        {
-            category: 'Evening'
-        }
-    ];
-
-
     // Get all action steps
     var goals = ListFactory.getList();
     $scope.goals = goals;
 
     // Initial setup for taskFactory
-    $scope.tasks = CalendarFactory.getList();
-    if ($scope.tasks.length !== ListFactory.getList().length) {
-        var tasks = [];
-        for (var i = 0; i < goals.length; i++) {
-            for (var j = 0; j < goals[i].task.length; j++) {
-                tasks.push(goals[i].task[j]);
-                console.log(goals[i].task[j]);
+    
+   // Get all action steps
+        $scope.tasks = CalendarFactory.getList();
+    var inside = true;
+    for (var y = 0; y < $scope.tasks.length; y++) {
+        if ($scope.tasks[y].id === 53) {
+            inside = false;
+        } 
+    }
+    console.log(inside);
+    if (inside) {
+
+        // Add in 'task' objects that represent morning, afternoon, evening
+            var morningTask = {
+                title: "Morning",
+                id: 53
+            };
+            var afternoonTask = {
+                title: "Afternoon",
+                id: 54
+            };
+            var eveningTask = {
+                title: "Evening",
+                id: 55
+            };
+            $scope.tasks.push(morningTask);
+            $scope.tasks.push(afternoonTask);
+            $scope.tasks.push(eveningTask);
+    }
+    
+        var numTasks = 0;
+        for (var t = 0; t < goals.length; t++) {
+            for (var u = 0; u < goals[t].task.length; u++) {
+                numTasks++;
             }
         }
-        $scope.tasks = tasks;
-    }
-
-    // Add in 'task' objects that represent morning, afternoon, evening
-    var morningTask = {
-        title: "Morning",
-        id: 53
-    };
-    var afternoonTask = {
-        title: "Afternoon",
-        id: 54
-    };
-    var eveningTask = {
-        title: "Evening",
-        id: 55
-    };
-    $scope.tasks.push(morningTask);
-    $scope.tasks.push(afternoonTask);
-    $scope.tasks.push(eveningTask);
-
+        numTasks = numTasks + 3;
+        if ($scope.tasks.length !== numTasks) {
+            console.log("here");
+            var tasks = [];
+            for (var i = 0; i < goals.length; i++) {
+                for (var j = 0; j < goals[i].task.length; j++) {
+                    tasks.push(goals[i].task[j]);
+                }
+            }
+            angular.extend($scope.tasks, tasks);
+        }
+    console.log($scope.tasks.length);
+    
     CalendarFactory.setList($scope.tasks);
 
     $scope.data = {
@@ -240,28 +247,20 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
                 numTasks++;
             }
         }
-        var tasks = [];
-        for (var i = 0; i < goals.length; i++) {
-            for (var j = 0; j < goals[i].task.length; j++) {
-                tasks.push(goals[i].task[j]);
-            }
-        }
-        var isDifferent = false;
-        for (var x = 0; x < $scope.tasks.length; x++) {
-            for (var s = 0; s < tasks.length; s++) {
-                if ($scope.tasks[x].title !== tasks[s].title) {
-                    isDifferent = true;
-                    break;
+        if ($scope.tasks.length !== numTasks) {
+            var tasks = [];
+            for (var i = 0; i < goals.length; i++) {
+                for (var j = 0; j < goals[i].task.length; j++) {
+                    tasks.push(goals[i].task[j]);
                 }
             }
-        }
-        if (isDifferent) {
             angular.extend($scope.tasks, tasks);
         }
-   $scope.$broadcast('scroll.refreshComplete');
+
+        $scope.$broadcast('scroll.refreshComplete');
 
     };
- 
+
 
 
 
