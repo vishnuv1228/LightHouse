@@ -9,37 +9,21 @@
         <button class="button button-icon ion-navicon" ng-click="data.showReorder = !data.showReorder; data.showDelete = false;">
         </button>
     </ion-nav-buttons>
-    <ion-content>
-        <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
-        </ion-refresher>
+    <ion-content class="has-footer">
         <h3 class="date">{{date}}</h3>
 
-         <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-             <ion-item class="{{task.color}} goal_text item item-icon-left" ng-repeat="task in tasks">
-                    <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task)"></ion-delete-button>
-                    <ion-reorder-button class="ion-navicon" on-reorder="moveItem(task, $fromIndex, $toIndex)"></ion-reorder-button>
-                    <i class="goal_info icon {{task.icon}}"></i> <span ng-class="{'time': task.id == 53 || task.id == 54 || task.id == 55}">{{task.title}}</span>
-                </ion-item>
-        </ion-list>     
-        
-        
-        
-
-        <!--
-        <div class="item item-divider" ng-repeat="(key, value) in tasks.task | groupBy: 'priority'">
-            <ion-list class="date" show-delete="data.showDelete" show-reorder="data.showReorder">
-                {{key}} 
-
-                <ion-item class="{{task.color}} goal_text item item-icon-left">
-                    <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task)"></ion-delete-button>
-                    <ion-reorder-button class="ion-navicon" on-reorder="moveItem(task, $fromIndex, $toIndex)"></ion-reorder-button>
-                    <i class="goal_info icon {{task.icon}}"></i>
-                    {{task.title}}
-                </ion-item>
-            </ion-list>
-        </div>
--->
-
+        <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
+            <ion-item class="{{task.color}} goal_text item item-icon-left" ng-repeat="task in tasks">
+                <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task)"></ion-delete-button>
+                <ion-reorder-button class="ion-navicon" on-reorder="moveItem(task, $fromIndex, $toIndex)"></ion-reorder-button>
+                <i class="goal_info icon {{task.icon}}"></i> <span ng-class="{'time': task.id == 53 || task.id == 54 || task.id == 55}">{{task.title}}</span>
+            </ion-item>
+        </ion-list>
 
     </ion-content>
+    <ion-footer-bar class="bar bar-royal">
+        <div class="button-bar">
+            <a class="button button-royal" ng-click="scheduleDay()">Add</a>
+        </div>
+    </ion-footer-bar>
 </ion-view>

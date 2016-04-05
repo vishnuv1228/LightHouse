@@ -1,0 +1,32 @@
+<div class="modal">
+
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+        <h1 class="title">Which action steps will you complete tomorrow?</h1>
+        <button class="button button-clear button-positive" ng-click="closeNewTask()">Cancel</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content>
+
+        <ion-list>
+
+            <ul ng-repeat="goal in goals">
+                <li class="item-divider toLeft">{{goal.name}} {{goal.completed}}/{{goal.freq}}</li>
+                <div ng-repeat="task in goal.task">
+                <ion-checkbox ng-model="isChecked"  ng-change="checkedOrNot(task, isChecked, $index)" ng-init="isChecked=false" class="{{task.color}} goal_text item item-icon-right">
+                    <i class="goal_info icon {{task.icon}}"></i>
+                    <span>{{task.title}} </span></ion-checkbox>
+                    </div>
+            </ul>
+            
+        </ion-list>
+
+    </ion-content>
+    <ion-footer-bar class="bar bar-royal">
+        <div class="button-bar">
+            <a class="button button-royal" ng-click="addToCalendar()">Add to Calendar</a>
+        </div>
+    </ion-footer-bar>
+
+</div>

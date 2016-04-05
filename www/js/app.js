@@ -148,7 +148,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     $urlRouterProvider.otherwise('/sign_in');
 })
 
-.controller('CalendarCtrl', function ($scope, goalService, CalendarFactory, ListFactory) {
+.controller('CalendarCtrl', function ($scope, goalService, CalendarFactory, ListFactory, $ionicModal) {
     var today = new Date();
     var month = today.getMonth() + 1;
     var d = new Date();
@@ -169,11 +169,19 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     // Get all action steps
     var goals = ListFactory.getList();
     $scope.goals = goals;
-
+    
+//    var newGoals = [];
+//    for (var u = 0; u < $scope.goals.length; u++) {
+//        for (var v = 0; v < $scope.goals[u].task; v++) {
+//            if ($scope.goals[u].task[v].isNotInCalendar === true) {
+//                newGoals.push($scope.goals[u])
+//            }
+//        }
+//    }
     // Initial setup for taskFactory
     
    // Get all action steps
-        $scope.tasks = CalendarFactory.getList();
+    $scope.tasks = CalendarFactory.getList();
     var inside = true;
     for (var y = 0; y < $scope.tasks.length; y++) {
         if ($scope.tasks[y].id === 53) {
@@ -200,27 +208,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
             $scope.tasks.push(afternoonTask);
             $scope.tasks.push(eveningTask);
     }
-    
-        var numTasks = 0;
-        for (var t = 0; t < goals.length; t++) {
-            for (var u = 0; u < goals[t].task.length; u++) {
-                numTasks++;
-            }
-        }
-        numTasks = numTasks + 3;
-        if ($scope.tasks.length !== numTasks) {
-            console.log("here");
-            var tasks = [];
-            for (var i = 0; i < goals.length; i++) {
-                for (var j = 0; j < goals[i].task.length; j++) {
-                    tasks.push(goals[i].task[j]);
-                }
-            }
-            angular.extend($scope.tasks, tasks);
-        }
-    console.log($scope.tasks.length);
-    
-    CalendarFactory.setList($scope.tasks);
+
 
     $scope.data = {
         showDelete: false
@@ -228,6 +216,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
 
     $scope.onItemDelete = function (task) {
         $scope.tasks.splice($scope.tasks.indexOf(task), 1);
+        task.isNotInCalendar = true;
         CalendarFactory.setList($scope.tasks);
     };
 
@@ -237,34 +226,44 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
         CalendarFactory.setList($scope.tasks);
     };
 
-    $scope.doRefresh = function () {
-        // Get all action steps
-        $scope.tasks = CalendarFactory.getList();
-        var numTasks = 0;
-        var goals = ListFactory.getList();
-        for (var t = 0; t < goals.length; t++) {
-            for (var u = 0; u < goals[t].task.length; u++) {
-                numTasks++;
+    
+    // MODAL
+    
+     // Create and load the Modal
+        $ionicModal.fromTemplateUrl('templates/schedule_day.html', function (modal) {
+            $scope.scheduleModal = modal;
+        }, {
+            scope: $scope,
+            animation: 'slide-in-up'
+        });
+        // Open our new task modal
+        $scope.scheduleDay = function () {
+            $scope.scheduleModal.show();
+            console.log($scope.tasks);
+        };
+
+        // Close the new task modal
+        $scope.closeNewTask = function () {
+            $scope.scheduleModal.hide();
+        };
+        $scope.isChecked = false;
+        $scope.selected = [];
+        $scope.checkedOrNot = function(task, isChecked, index) {
+            if (isChecked) {
+                $scope.selected.push(task);
+                task.isNotInCalendar = false;
             }
-        }
-        if ($scope.tasks.length !== numTasks) {
-            var tasks = [];
-            for (var i = 0; i < goals.length; i++) {
-                for (var j = 0; j < goals[i].task.length; j++) {
-                    tasks.push(goals[i].task[j]);
-                }
-            }
-            angular.extend($scope.tasks, tasks);
-        }
-
-        $scope.$broadcast('scroll.refreshComplete');
-
-    };
-
-
-
-
-
+        };
+        
+        $scope.addToCalendar = function() {
+           for (var z = 0; z < $scope.selected.length; z++) {
+               $scope.tasks.push($scope.selected[z]);
+           }
+            CalendarFactory.setList($scope.tasks);
+            $scope.scheduleModal.hide();
+        };
+    
+    
 
 })
 
@@ -542,6 +541,7 @@ LightHouse.service('goalService', function () {
                     numCompleted: 0,
                     color: 'positive',
                     icon: 'ion-fork',
+                    isNotInCalendar: true,
                     id: 1
                     }
                 ]
@@ -560,6 +560,7 @@ LightHouse.service('goalService', function () {
                     numCompleted: 0,
                     color: 'energized',
                     icon: 'ion-android-walk',
+                    isNotInCalendar: true,
                     id: 2
                     }
                 ]
@@ -579,6 +580,7 @@ LightHouse.service('goalService', function () {
                     numCompleted: 0,
                     color: 'calm',
                     icon: 'ion-university',
+                    isNotInCalendar: true,
                     id: 3
                     }
                 ]
