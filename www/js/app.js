@@ -454,6 +454,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
             $state.go('sidemenu.goal_overview');
         } else { // Add new goal
             goal.task = [];
+            goal.completed = 0;
 
             goal.id = Math.round((Math.random() * 10) * 10);
 
