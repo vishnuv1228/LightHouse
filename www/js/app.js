@@ -174,6 +174,9 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     $scope.goals = goals;
     
     $scope.showAdd = function(){
+        if(reflectionService.displayAdd === undefined){
+            reflectionService.displayAdd=true;
+        }
       return reflectionService.displayAdd;  
     };
     
@@ -434,8 +437,7 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state','reflectionServi
             }
 
             alert(alarmTime.toTimeString());
-            
-            
+            reflectionService.displayAdd=true;
 
 //            cordova.plugins.notification.local.schedule({
 //                id: 1,
