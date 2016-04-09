@@ -172,80 +172,70 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
         goals = goalService.getGoals();
     }
     $scope.goals = goals;
-    
-//    var newGoals = [];
-//    for (var u = 0; u < $scope.goals.length; u++) {
-//        for (var v = 0; v < $scope.goals[u].task; v++) {
-//            if ($scope.goals[u].task[v].isNotInCalendar === true) {
-//                newGoals.push($scope.goals[u])
-//            }
-//        }
-//    }
-    // Initial setup for taskFactory
-    
-   // Get all action steps
+
+
+    // Get all action steps
     $scope.tasks = CalendarFactory.getList();
     var inside = true;
     for (var y = 0; y < $scope.tasks.length; y++) {
         if ($scope.tasks[y].id === 53) {
             inside = false;
-        } 
+        }
     }
-    console.log(inside);
     if (inside) {
 
         // Add in 'task' objects that represent morning, afternoon, evening
-            var morningTask = {
-                title: "Morning",
-                id: 53
-            };
-            var afternoonTask = {
-                title: "Afternoon",
-                id: 54
-            };
-            var eveningTask = {
-                title: "Evening",
-                id: 55
-            };
-            $scope.tasks.push(morningTask);
-            $scope.tasks.push(afternoonTask);
-            $scope.tasks.push(eveningTask);
+        var morningTask = {
+            title: "Morning",
+            id: 53
+        };
+        var afternoonTask = {
+            title: "Afternoon",
+            id: 54
+        };
+        var eveningTask = {
+            title: "Evening",
+            id: 55
+        };
+        $scope.tasks.push(morningTask);
+        $scope.tasks.push(afternoonTask);
+        $scope.tasks.push(eveningTask);
     }
- // MODAL
-    
-     // Create and load the Modal
-        $ionicModal.fromTemplateUrl('templates/schedule_day.html', function (modal) {
-            $scope.scheduleModal = modal;
-        }, {
-            scope: $scope,
-            animation: 'slide-in-up'
-        });
-        // Open our new task modal
-        $scope.scheduleDay = function () {
-            $scope.scheduleModal.show();
-            console.log($scope.tasks);
-        };
+    // MODAL
 
-        // Close the new task modal
-        $scope.closeNewTask = function () {
-            $scope.scheduleModal.hide();
-        };
-        $scope.isChecked = false;
-        $scope.selected = [];
-        $scope.checkedOrNot = function(task, isChecked, index) {
-            if (isChecked) {
-                $scope.selected.push(task);
-                task.isNotInCalendar = false;
-            }
-        };
-        
-        $scope.addToCalendar = function() {
-           for (var z = 0; z < $scope.selected.length; z++) {
-               $scope.tasks.push($scope.selected[z]);
-           }
-            CalendarFactory.setList($scope.tasks);
-            $scope.scheduleModal.hide();
-        };
+    // Create and load the Modal
+    $ionicModal.fromTemplateUrl('templates/schedule_day.html', function (modal) {
+        $scope.scheduleModal = modal;
+    }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+    });
+    // Open our new task modal
+    $scope.scheduleDay = function () {
+        $scope.scheduleModal.show();
+        console.log($scope.tasks);
+    };
+
+    // Close the new task modal
+    $scope.closeNewTask = function () {
+        $scope.scheduleModal.hide();
+    };
+    $scope.isChecked = false;
+    $scope.selected = [];
+    $scope.checkedOrNot = function (task, isChecked, index) {
+        if (isChecked) {
+            $scope.selected.push(task);
+            task.isNotInCalendar = false;
+        }
+    };
+
+    $scope.addToCalendar = function () {
+        for (var z = 0; z < $scope.selected.length; z++) {
+            $scope.tasks.push($scope.selected[z]);
+        }
+        CalendarFactory.setList($scope.tasks);
+        $scope.scheduleModal.hide();
+    };
 
     $scope.data = {
         showDelete: false
@@ -262,10 +252,37 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
         $scope.tasks.splice(toIndex, 0, task);
         CalendarFactory.setList($scope.tasks);
     };
-    
-   
-    
-    
+
+    $scope.taskCompleted = function (task) {
+        task.completed = (task.completed) ? false : true;
+
+
+        // Get the goal from the task
+        for (var x = 0; x < $scope.goals.length; x++) {
+            for (var y = 0; y < $scope.goals[x].task.length; y++) {
+                if ($scope.goals[x].task[y].id === task.id) {
+                    var goal = $scope.goals[x];
+                    var taskInGoal = $scope.goals[x].task[y];
+                    taskInGoal.completed = (task.completed) ? false : true;
+                    if (task.completed) {
+                        taskInGoal.numCompleted += 1;
+                        goalService.totalCompleted += 1;
+                        goal.completed += 1;
+                    } else if (task.completed === false) {
+                        taskInGoal.numCompleted -= 1;
+                        goalService.totalCompleted -= 1;
+                        goal.completed -= 1;
+                    }
+                }
+            }
+        }
+        ListFactory.setList($scope.goals);
+
+    };
+
+
+
+
 
 })
 
@@ -430,6 +447,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
     // Set up the initial values for the goal if selected from goal overview
 
     if (goalFromPrev !== null) {
+        console.log("inside controller");
         $scope.goal = {
             color: goalFromPrev.color,
             name: goalFromPrev.name,
@@ -441,6 +459,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
     $scope.createGoal = function (goal) {
         // Update goal
         if (goalFromPrev !== null) {
+            console.log("Editing");
             for (var i = 0; i < goalBank.length; i++) {
                 if (goalBank[i].id == goalFromPrev.id) {
                     goalBank[i].name = goal.name;
@@ -452,6 +471,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
             ListFactory.setList(goalBank);
             $state.go('sidemenu.goal_overview');
         } else { // Add new goal
+            console.log("adding new goal");
             goal.task = [];
             goal.completed = 0;
 
@@ -459,6 +479,8 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 
 
             goalService.addGoal(goal);
+            var goals = goalService.getGoals();
+            ListFactory.setList(goals);
             $state.get('create_task').data.goal = goal;
             $state.go('create_task', {
                 obj: goal
@@ -476,9 +498,8 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
     var goalFromPrev = $state.params.obj;
     var taskFromPrev = $state.params.obj1;
-    // var goalBank = ListFactory.getList();
+    // var goalBank = ListFactory.getList();    
 
-    console.log(goalFromPrev);
 
     if (taskFromPrev !== null) {
         $scope.task = {
@@ -534,13 +555,13 @@ LightHouse.service('goalService', function () {
             freq: 4,
             icon: 'ion-fork',
             id: 1,
-            completed: 0,
+            completed: 1,
             task: [
                 {
                     title: 'Eating a salad',
                     priority: 'Morning',
                     completed: true,
-                    numCompleted: 0,
+                    numCompleted: 1,
                     color: 'positive',
                     icon: 'ion-fork',
                     isNotInCalendar: true,
@@ -592,6 +613,10 @@ LightHouse.service('goalService', function () {
 
     var addGoal = function (newGoal) {
         goals.push(newGoal);
+        for (var i = 0; i < goals.length; i++) {
+            console.log("Goal " + i + " " + goals[i].name);
+        }
+
     };
     var getGoals = function () {
         return goals;
@@ -606,7 +631,7 @@ LightHouse.service('goalService', function () {
         }
     };
 
-    var totalCompleted = 0;
+    var totalCompleted = 1;
 
     return {
         addGoal: addGoal,
@@ -628,22 +653,41 @@ LightHouse.service('goalService', function () {
 
 LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'goalService', function (ListFactory, $scope, $state, goalService) {
 
-    $scope.prog = {
-        progress: 0,
-        total: goalService.totalFreq()
-
-    };
 
     if (ListFactory.getList().length === 0) {
         $scope.goals = goalService.getGoals();
+
     } else {
         $scope.goals = ListFactory.getList();
     }
+
+    // Tally up total frequency of all goals
+    var frequency = 0;
+    for (var a = 0; a < $scope.goals.length; a++) {
+        frequency += $scope.goals[a].freq;
+    }
+    $scope.prog = {
+        progress: 0,
+        total: frequency
+
+    };
+    // Find total completed
+    var totalCompleted = 0;
+    for (var b = 0; b < $scope.goals.length; b++) {
+        totalCompleted += $scope.goals[b].completed;
+    }
+    $scope.prog.progress = totalCompleted;
+
 
     $scope.doRefresh = function () {
         var goalBank = goalService.getGoals();
         ListFactory.setList(goalBank);
         $scope.goals = ListFactory.getList();
+        var totalCompleted = 0;
+        for (var b = 0; b < $scope.goals.length; b++) {
+            totalCompleted += $scope.goals[b].completed;
+        }
+        $scope.prog.progress = totalCompleted;
         $scope.$broadcast('scroll.refreshComplete');
     };
 
@@ -676,22 +720,6 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
         $state.go('create_goal', {
             obj: goal
         });
-    };
-
-    $scope.taskCompleted = function (task, goal) {
-        task.completed = (task.completed) ? false : true;
-        if (task.completed) {
-            task.numCompleted += 1;
-            goalService.totalCompleted += 1;
-            goal.completed += 1;
-        } else if (task.completed === false) {
-            task.numCompleted -= 1;
-            goalService.totalCompleted -= 1;
-            goal.completed -= 1;
-        }
-
-        $scope.prog.progress = goalService.totalCompleted;
-
     };
 
     $scope.toggleEditTask = function (task) {
