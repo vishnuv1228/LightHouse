@@ -26,11 +26,11 @@
 
     </ion-content>
     <ion-footer-bar class="bar bar-royal">
-        <div class="button-bar" >
-            <a class="button button-royal" ng-click="scheduleDay()" ng-show="showAdd()" >Add</a>
+        <div class="button-bar" ng-show="showAdd()" >
+            <a class="button button-royal" ng-click="scheduleDay()"  >Add</a>
         </div>
-        <div class="button-bar" >
-            <a class="button button-royal" ng-click="routeToReflect()" ng-hide="showAdd()" >Reflect</a>
+        <div class="button-bar" ng-hide="showAdd()">
+            <a class="button button-royal" ng-click="routeToReflect()"  >Reflect</a>
         </div>
     </ion-footer-bar>
 </ion-view>

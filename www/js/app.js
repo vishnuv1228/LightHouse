@@ -422,36 +422,36 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state','reflectionServi
     {
         $scope.schedulePrompt = function (promptTime) {
             var alarmTime = new Date();
-            alert(promptTime.minute);
-            alert(promptTime.hour);
-            alert(promptTime.period);
             alarmTime.setMinutes(promptTime.minute);
             if (promptTime.period == "AM") {
-                alert("here");
                 if (promptTime.hour == 12) {
                     promptTime.hour = 0;
                 }
                 alarmTime.setHours(promptTime.hour);
             } else {
-                alarmTime.setHours(promptTime.hour + 12);
+                alarmTime.setHours(parseInt(promptTime.hour)+12);
             }
 
-            alert(alarmTime.toTimeString());
+            if(alarmTime < new Date()){
+                alarmTime.setDate(alarmTime.getDate() + 1);
+            }
+            alert(alarmTime);
             reflectionService.displayAdd=true;
 
-//            cordova.plugins.notification.local.schedule({
-//                id: 1,
-//                title: "Lighthouse",
-//                text: "It's time to reflect on today's tasks!",
-//                every: "day"
-//            });
-//
-//            cordova.plugins.notification.local.on("click", function (notification) {
-//                if (notification.id == 1) {
-//                    reflectionService.displayAdd=false;
-//                    $state.go('reflection');
-//                }
-//            });
+            cordova.plugins.notification.local.schedule({
+                id: 1,
+                title: "Lighthouse",
+                text: "It's time to reflect on today's tasks!",
+                every: "day",
+                firstAt: alarmTime
+            });
+
+            cordova.plugins.notification.local.on("click", function (notification) {
+                if (notification.id == 1) {
+                    reflectionService.displayAdd=false;
+                    $state.go('sidemenu.calendar');
+                }
+            });
 
             $state.go('create_goal');
         };
