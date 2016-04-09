@@ -2,8 +2,40 @@
 
     <ion-content class="has-subheader">
         <div>
-             <p class="padding">Please reflect on the tasks you have completed today.</p>
-            <textarea class="padding" style="border:solid 1px black; margin:0 auto; width:90%;" rows="10" cols="50" ngModel=reflection.text></textarea>
+             <p style="text-align:center; font-weight:bold; font-size:20px;" class="padding">Reflect on yesterday</p>
+<!--
+            <div ng-repeat="goal in goals">
+                {{numCompletedTasks(goal)}}/{{numTasks(goal)}}
+            </div>
+-->
+            <div class="reflection-container">
+            <label>
+                What went well?
+            </label>
+            <textarea class="padding reflection-textarea" rows="3"  ngModel=reflection.text-went-well></textarea>
+            </div>
+            
+            <div class="reflection-container">
+            <label>
+                What didn't go well?
+            </label>
+            <textarea class="padding reflection-textarea" rows="3"  ngModel=reflection.text-didnt-well></textarea>
+            </div>
+            
+            <div class="reflection-container">
+            <label>
+                Next time I will...
+            </label>
+              <textarea class="padding reflection-textarea" rows="3"  ngModel=reflection.text-next></textarea>
+            </div>
+            
+            <div class="reflection-container">
+            <label>
+                Other
+            </label>
+             <textarea class="padding reflection-textarea" rows="3"  ngModel=reflection.text-other></textarea>
+            </div>
+            
             <button class="button button-block button-royal" ng-click="schedule()" >
                 Schedule your next day
             </button>
