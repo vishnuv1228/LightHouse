@@ -238,16 +238,26 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     };
 
     $scope.data = {
-        showDelete: false
+        showDelete: false,
+        showReorder: false
     };
+    $scope.showButton = function(id) {
+        return ! (id === 53 || id === 54 || id === 55);
+    }
 
     $scope.onItemDelete = function (task) {
+        if (task.id === 53 || task.id === 54 || task.id === 55) {
+            return;
+        }
         $scope.tasks.splice($scope.tasks.indexOf(task), 1);
         task.isNotInCalendar = true;
         CalendarFactory.setList($scope.tasks);
     };
 
     $scope.moveItem = function (task, fromIndex, toIndex) {
+        if (task.id === 53 || task.id === 54 || task.id === 55) {
+            return;
+        }
         $scope.tasks.splice(fromIndex, 1);
         $scope.tasks.splice(toIndex, 0, task);
         CalendarFactory.setList($scope.tasks);
@@ -556,13 +566,13 @@ LightHouse.service('goalService', function () {
             freq: 4,
             icon: 'ion-fork',
             id: 1,
-            completed: 1,
+            completed: 0,
             task: [
                 {
                     title: 'Eating a salad',
                     priority: 'Morning',
-                    completed: true,
-                    numCompleted: 1,
+                    completed: false,
+                    numCompleted: 0,
                     color: 'positive',
                     icon: 'ion-fork',
                     isNotInCalendar: true,

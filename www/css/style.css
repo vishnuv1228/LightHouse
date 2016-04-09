@@ -59,6 +59,7 @@ progress[value] {
 }
 .time {
     font-weight: bold;
+    
 }
 .swipe-disabled div.item-content {
     -webket-transition: none !important;
@@ -68,3 +69,4 @@ progress[value] {
 .toLeft {
     margin-left: 20px;
 }
+
