@@ -17,9 +17,10 @@
                 <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(task)" ng-show="showButton(task.id)"></ion-delete-button>
                 <ion-reorder-button class="ion-navicon" on-reorder="moveItem(task, $fromIndex, $toIndex)" ng-show="showButton(task.id)"></ion-reorder-button>
                 <i class="goal_info icon {{task.icon}}"></i> <span ng-class="{'time': task.id == 53 || task.id == 54 || task.id == 55, 'done': task.completed} ">
-                {{task.title}}</span>  <button class="button button-{{task.color}}" ng-click="taskCompleted(task)"ng-show="showButton(task.id)">
-                        <i class="icon ion-checkmark"></i>
-                    </button>
+                {{task.title}}</span>
+                <button class="button button-{{task.color}}" ng-click="taskCompleted(task)" ng-show="showButton(task.id)">
+                    <i class="icon ion-checkmark"></i>
+                </button>
             </ion-item>
         </ion-list>
 
