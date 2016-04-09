@@ -459,10 +459,25 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state','reflectionServi
 
 }]);
 
-LightHouse.controller('ReflectionCtrl', ['$scope', '$state', 'goalService','reflectionService', function ($scope, $state, goalService,reflectionService)
+LightHouse.controller('ReflectionCtrl', ['$scope', '$state', 'ListFactory','reflectionService', function ($scope, $state, ListFactory,reflectionService)
     {
-        var goals = goalService.getGoals();
+        var goals = ListFactory.getList();
         $scope.goals = goals;
+        $scope.numCompleted = 0;
+        for (var x = 0; x < goals.length; x++) {
+            for (var y = 0; y < goals[x].task.length; y++) {
+                $scope.numCompleted += goals[x].task[y].numCompleted;
+            }
+        }
+        $scope.numTasksInCalendar = 0;
+        for (var i = 0; i < goals.length; i++) {
+            for (var j= 0; j < goals[i].task.length; j++) {
+                if (goals[i].task[j].isNotInCalendar) {
+                    $scope.numTasksInCalendar++;
+                }
+            }
+        }
+        console.log($scope.numCompleted);
         $scope.schedule = function () {
             reflectionService.displayAdd=true;
             $state.go('sidemenu.calendar');

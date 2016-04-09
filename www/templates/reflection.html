@@ -2,6 +2,7 @@
 
     <ion-content class="has-subheader">
         <div>
+                <h1>You have completed {{numCompleted}} / {{numTasksInCalendar}} tasks today!</h1>
              <p class="padding">Please reflect on the tasks you have completed today.</p>
             <textarea class="padding" style="border:solid 1px black; margin:0 auto; width:90%;" rows="10" cols="50" ngModel=reflection.text></textarea>
             <button class="button button-block button-royal" ng-click="schedule()" >
