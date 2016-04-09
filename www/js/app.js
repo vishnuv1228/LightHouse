@@ -282,25 +282,26 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     $scope.taskCompleted = function (task) {
         task.completed = (task.completed) ? false : true;
 
-
+        var goal;
+        var taskInGoal;
         // Get the goal from the task
         for (var x = 0; x < $scope.goals.length; x++) {
             for (var y = 0; y < $scope.goals[x].task.length; y++) {
                 if ($scope.goals[x].task[y].id === task.id) {
-                    var goal = $scope.goals[x];
-                    var taskInGoal = $scope.goals[x].task[y];
-                    taskInGoal.completed = (task.completed) ? false : true;
-                    if (task.completed) {
-                        taskInGoal.numCompleted += 1;
-                        goalService.totalCompleted += 1;
-                        goal.completed += 1;
-                    } else if (task.completed === false) {
-                        taskInGoal.numCompleted -= 1;
-                        goalService.totalCompleted -= 1;
-                        goal.completed -= 1;
-                    }
+                    goal = $scope.goals[x];
+                    taskInGoal = $scope.goals[x].task[y];
+                    break;
                 }
             }
+        }
+        if (task.completed) {
+            taskInGoal.numCompleted += 1;
+            goalService.totalCompleted += 1;
+            goal.completed += 1;
+        } else {
+            taskInGoal.numCompleted -= 1;
+            goalService.totalCompleted -= 1;
+            goal.completed -= 1;
         }
         ListFactory.setList($scope.goals);
 
