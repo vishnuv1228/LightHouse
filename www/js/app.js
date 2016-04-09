@@ -148,7 +148,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     $urlRouterProvider.otherwise('/sign_in');
 })
 
-.controller('CalendarCtrl', function ($scope, goalService, CalendarFactory, ListFactory, $ionicModal) {
+.controller('CalendarCtrl', function ($state, $scope, goalService,reflectionService, CalendarFactory, ListFactory, $ionicModal) {
     var today = new Date();
     var month = today.getMonth() + 1;
     var d = new Date();
@@ -172,6 +172,19 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
         goals = goalService.getGoals();
     }
     $scope.goals = goals;
+    
+    $scope.showAdd = function(){
+      return reflectionService.displayAdd;  
+    };
+    
+    $scope.showReflection = function(){
+        return !reflectionService.displayAdd;
+    };
+    
+    $scope.routeToReflect = function(){
+        reflectionService.displayAdd=true;
+        $state.go('reflection');
+    };
 
 
     // Get all action steps
@@ -402,7 +415,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
     };
 });
 
-LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state', function ($scope, $state)
+LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state','reflectionService', function ($scope, $state,reflectionService)
     {
         $scope.schedulePrompt = function (promptTime) {
             var alarmTime = new Date();
@@ -421,31 +434,34 @@ LightHouse.controller('SchedulePromptCtrl', ['$scope', '$state', function ($scop
             }
 
             alert(alarmTime.toTimeString());
+            
+            
 
-            cordova.plugins.notification.local.schedule({
-                id: 1,
-                title: "Lighthouse",
-                text: "It's time to reflect on today's tasks!",
-                every: "day"
-            });
-
-            cordova.plugins.notification.local.on("click", function (notification) {
-                if (notification.id == 1) {
-                    alert("here");
-                    $state.go('reflection');
-                }
-            });
+//            cordova.plugins.notification.local.schedule({
+//                id: 1,
+//                title: "Lighthouse",
+//                text: "It's time to reflect on today's tasks!",
+//                every: "day"
+//            });
+//
+//            cordova.plugins.notification.local.on("click", function (notification) {
+//                if (notification.id == 1) {
+//                    reflectionService.displayAdd=false;
+//                    $state.go('reflection');
+//                }
+//            });
 
             $state.go('create_goal');
         };
 
 }]);
 
-LightHouse.controller('ReflectionCtrl', ['$scope', '$state', 'goalService', function ($scope, $state, goalService)
+LightHouse.controller('ReflectionCtrl', ['$scope', '$state', 'goalService','reflectionService', function ($scope, $state, goalService,reflectionService)
     {
         var goals = goalService.getGoals();
         $scope.goals = goals;
         $scope.schedule = function () {
+            reflectionService.displayAdd=true;
             $state.go('sidemenu.calendar');
         };
 }]);
@@ -556,6 +572,10 @@ LightHouse.controller('CreateTaskCtrl', ['ListFactory', '$scope', '$state', 'goa
         
     };
 }]);
+
+LightHouse.service('reflectionService',function(){
+     var displayAdd=true; 
+});
 
 LightHouse.service('goalService', function () {
     var currGoal = {};
