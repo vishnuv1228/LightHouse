@@ -70,3 +70,13 @@ progress[value] {
     margin-left: 20px;
 }
 
+div.reflection-container{
+    width:90%;
+    margin:auto;
+}
+
+textarea.reflection-textarea{
+    border:solid 1px black;
+    margin:0 auto;
+    width:100%;
+}
