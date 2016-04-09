@@ -102,6 +102,7 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
 
     .state('sidemenu.goal_overview', {
         url: '/goal_overview',
+        cache: false,
         views: {
             'menuContent': {
                 templateUrl: "templates/goal_overview.html",
@@ -113,19 +114,18 @@ var LightHouse = angular.module('LightHouse', ['ionic', 'ionic.service.core', 'i
 
     .state('create_task', {
         url: '/create_task',
+        cache: false,
         params: {
             obj: null,
             obj1: null
         },
         templateUrl: 'templates/create_task.html',
-        controller: 'CreateTaskCtrl',
-        data: {
-            goal: null
-        }
+        controller: 'CreateTaskCtrl'
     })
 
     .state('create_goal', {
         url: '/create_goal',
+        cache: false,
         params: {
             obj: null
         },
@@ -455,6 +455,7 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 
     var goalFromPrev = $state.params.obj;
     var goalBank = ListFactory.getList();
+    console.log(goalBank.length);
     // Set up the initial values for the goal if selected from goal overview
     
     $scope.goal = {};
@@ -490,7 +491,6 @@ LightHouse.controller('CreateGoalCtrl', ['ListFactory', '$scope', '$state', 'goa
 
             goal.id = Math.round((Math.random() * 10) * 10);
 
-            goalService.addGoal(goal);
             var goals = ListFactory.getList();
             goals.push(goal);
             ListFactory.setList(goals);
@@ -671,6 +671,7 @@ LightHouse.controller('GoalOverviewCtrl', ['ListFactory', '$scope', '$state', 'g
 
     if (ListFactory.getList().length === 0) {
         $scope.goals = goalService.getGoals();
+        ListFactory.setList($scope.goals);
 
     } else {
         $scope.goals = ListFactory.getList();
