@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('starter.factories', [])
   .factory('ListFactory', function() {
 
     var list = [];

@@ -3,17 +3,17 @@
     <ion-content class="has-subheader">
         <div>
             <h1 class="date">You have completed {{numCompleted}} / {{numTasksInCalendar}} action steps today!</h1>
-             <p style="text-align:center; font-weight:bold; font-size:20px;" class="padding">Reflect on yesterday</p>
+             <p style="text-align:center; font-weight:bold; font-size:20px;" class="padding">Reflect on your day</p>
             <div class="reflection-container">
             <label>
-                What went well?
+                What went well today?
             </label>
             <textarea class="padding reflection-textarea" rows="3" ng-init="reflection.well = 'I finished writing my paper!'" ng-model="reflection.well"></textarea>
             </div>
             
             <div class="reflection-container">
             <label>
-                What didn't go well?
+                What didn't go well today?
             </label>
             <textarea class="padding reflection-textarea" rows="3" ng-init="reflection.notWell = 'I decided to eat Chipotle instead of going to the gym. Now, I feel fat.'" ng-model="reflection.notWell"></textarea>
             </div>
