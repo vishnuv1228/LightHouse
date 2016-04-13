@@ -465,23 +465,23 @@ LightHouse.controller('ReflectionCtrl', ['$scope', '$state', 'goalService','refl
         if (goals.length === 0) {
             goals = goalService.getGoals();
         }
-//        
-//         $scope.numCompletedTasks = function(goal){
-//            var counter=0;
-//            for(var i =0;i<goal.tasks.length;i++){
-//                if(goal.tasks[i].completed){
-//                    counter++;
-//                }
-//            }
-//            console.log(counter);
-//           return counter;
-//        };
-//        
-//        $scope.numTasks = function(goal){
-//            console.log(goal.tasks.length);
-//            return goal.tasks.length;
-//        };
-        
+        $scope.goals = goals;
+        $scope.numCompleted = 0;
+        for (var x = 0; x < goals.length; x++) {
+            for (var y = 0; y < goals[x].task.length; y++) {
+                $scope.numCompleted += goals[x].task[y].numCompleted;
+            }
+        }
+        $scope.numTasksInCalendar = 0;
+        for (var i = 0; i < goals.length; i++) {
+            for (var j= 0; j < goals[i].task.length; j++) {
+                if (goals[i].task[j].isNotInCalendar) {
+                    $scope.numTasksInCalendar++;
+                }
+            }
+        }
+        $scope.reflection;
+
         $scope.schedule = function () {
             reflectionService.displayAdd=true;
             $state.go('sidemenu.calendar');

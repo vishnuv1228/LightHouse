@@ -2,38 +2,34 @@
 
     <ion-content class="has-subheader">
         <div>
+            <h1 class="date">You have completed {{numCompleted}} / {{numTasksInCalendar}} action steps today!</h1>
              <p style="text-align:center; font-weight:bold; font-size:20px;" class="padding">Reflect on yesterday</p>
-<!--
-            <div ng-repeat="goal in goals">
-                {{numCompletedTasks(goal)}}/{{numTasks(goal)}}
-            </div>
--->
             <div class="reflection-container">
             <label>
                 What went well?
             </label>
-            <textarea class="padding reflection-textarea" rows="3"  ng-model=reflection.text-went-well></textarea>
+            <textarea class="padding reflection-textarea" rows="3" ng-init="reflection.well = 'I finished writing my paper!'" ng-model="reflection.well"></textarea>
             </div>
             
             <div class="reflection-container">
             <label>
                 What didn't go well?
             </label>
-            <textarea class="padding reflection-textarea" rows="3"  ng-model=reflection.text-didnt-well></textarea>
+            <textarea class="padding reflection-textarea" rows="3" ng-init="reflection.notWell = 'I decided to eat Chipotle instead of going to the gym. Now, I feel fat.'" ng-model="reflection.notWell"></textarea>
             </div>
             
             <div class="reflection-container">
             <label>
                 Next time I will...
             </label>
-              <textarea class="padding reflection-textarea" rows="3"  ng-model=reflection.text-next></textarea>
+              <textarea class="padding reflection-textarea" rows="3" ng-init="reflection.next = 'Talk to that girl.'" ng-model="reflection.next"></textarea>
             </div>
             
             <div class="reflection-container">
             <label>
                 Other
             </label>
-             <textarea class="padding reflection-textarea" rows="3"  ng-model=reflection.text-other></textarea>
+             <textarea class="padding reflection-textarea" rows="3"  ng-model="reflection.other"></textarea>
             </div>
             
             <button class="button button-block button-royal" ng-click="schedule()" >
