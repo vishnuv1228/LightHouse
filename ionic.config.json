@@ -1,0 +1,11 @@
+{
+  "name": "LightHouse",
+  "integrations": {},
+  "pro_id": "8727f14d",
+  "watchPatterns": [
+    "scss/**/*",
+    "www/**/*",
+    "!www/lib/**/*",
+    "!www/**/*.map"
+  ]
+}
